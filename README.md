@@ -2,17 +2,18 @@
 
 # Instructor(s) name(s) and contact information
 
-Nitesh Turaga <nitesh.turaga@roswellpark.org> (Github: @nturaga)
+Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga](https://github.com/nturaga))
 
 # Workshop Description
 
 Bioconductor provides Docker containers which aim to provide isolated
 and reproducible environments for analysis. These containers avoid
 complex installation issues for the user. This workshop will focus on
-how to use Bioconductor docker images, talk about the different kinds
-of flavors of Bioconductor Docker images are present and as a final
-advanced topic we will cover how to extrapolate these Docker images to
-use on cloud services and also on HPC infrastructure with Singularity.
+how to use Bioconductor docker images, describe the different flavors
+of Bioconductor Docker images that are available, how to set up a
+reproducible environment on a local machine, and as a final advanced
+topic we will cover how to extrapolate these Docker images to be used
+on cloud services and also on HPC infrastructure with Singularity.
 
 ## Pre-requisites
 
@@ -20,16 +21,15 @@ use on cloud services and also on HPC infrastructure with Singularity.
   Bioconductor way (using `BiocManager()`).
 
 * Docker needs to be installed on your local machine. Please
-  [install](https://docs.docker.com/install/) ahead of time. If you
-  are planning to attend this workshop and are having issues
+  [install](https://docs.docker.com/install/) Docker ahead of time. If
+  you are planning to attend this workshop and are having issues
   installing Docker please email me ahead of time, I will help you
   through it.
 
 * Some familiarity with HPC infrastructure (if this is relevant to
   participant).
 
-List relevant background reading for the workshop, including any
-theoretical background you expect students to have.
+#### Background reading
 
 * (Required) Install Docker https://docs.docker.com/install/ ahead of
   time. Help will not be provided during the workshop.
@@ -39,14 +39,14 @@ theoretical background you expect students to have.
 ## Workshop Participation
 
 Participants are expected to launch Docker images on their local
-machines, mount volumes, and set ports. They will learn to selectively
-use a required set of packages for the particular Docker image. There
-is going to be a live demonstration of usage of Docker, and
-participants are exptected to follow along.
+machines, mount volumes, and set ports as needed for RStudio. They
+will learn to selectively use a required set of packages for the
+particular Docker image. There is going to be a live demonstration of
+usage of Docker, and participants are exptected to follow along.
 
-## _R_ / _Bioconductor_ packages used
+## *R* / *Bioconductor* packages used
 
-* BiocManager
+* [BiocManager](https://cran.r-project.org/web/packages/BiocManager/index.html)
 
 ## Time outline
 
@@ -64,7 +64,7 @@ An example for a 1 hour 45-minute workshop:
 | Localize select packages     | 10m  |
 | HPC-Singularity containers   | 5m   |
 | Launch and run parallel jobs | 10m  |
-| Questions                    | 10m  |
+| Questions                    | 10m+ |
 
 # Workshop goals and objectives
 
