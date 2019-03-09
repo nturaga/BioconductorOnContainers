@@ -71,18 +71,18 @@ An example for a 1 hour 45-minute workshop:
 ## Learning goals
 
 Participants will understand **how** and **why** and **when** to use
-Bioconductor with Docker images. Workshop will differentiate the
-**flavor** of Bioconductor containers, and how set them up in a
-reproducible fashion. The workshop will describe practice how to use
-Docker images and mount volumes as needed from their local machine,
-which will design a working evironment which does not need any
-installation of system dependencies. The workshop will also outline
+Bioconductor with Docker images. The workshop will differentiate the
+**flavors** of Bioconductor containers, and how set them up in a
+reproducible fashion. The workshop will describe how to use
+Docker images and mount volumes as needed from local machines,
+and designing a working environment which does not need any
+installation of system dependencies. The workshop will also briefly outline
 how to use Docker on cloud services such as Google cloud and AWS,
-breifly, allowing users to launch an image on a cloud instance, giving
+allowing users to launch an image on a cloud instance, giving
 them instant access to Bioconductor facilities. We will discuss
-briefly how to set up Singularity containers on high performance
+how to set up Singularity containers on high performance
 computing platforms, and point out resources to enable parallel
-computing with containers, taking away the burden to ask system
+computing with containers which taking away the burden to ask system
 administrators to install resources for them.
 
 ## Learning objectives
