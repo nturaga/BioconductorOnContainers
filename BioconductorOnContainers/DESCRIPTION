@@ -1,0 +1,18 @@
+Package: BioconductorOnContainers
+Title: Use Bioconductor on Containers 
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Nitesh",
+           family = "Turaga",
+           role = c("aut", "cre"),
+           email = "nitesh.turaga@roswellpark.org",
+           comment = c(ORCID = "0000-0002-0224-9817"))
+Description: This package provides a vignette describing how to use
+	     Bioconductor with the help on Containers. It provides an
+	     overview for both beginners and advanced users. Using
+	     Bioconductor on containers takes away the pain of having
+	     to manage and install system dependencies. The user needs
+	     to only have a working version of a Container technology
+	     such as Docker.
+License: MIT
+Encoding: UTF-8
