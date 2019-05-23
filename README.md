@@ -4,6 +4,22 @@
 
 Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga](https://github.com/nturaga))
 
+# Schedule
+
+NOTE: Since the workshop is broken into pre-lunch and post-lunch session, i've decided to break up the topics into two sessions. I recommend attending both to get a complete idea of the Bioconductor ecosystem on containers and how to use them.
+
+https://bioc2019.bioconductor.org/schedule-developer-day
+
+ROOM: Smilow Seminar Room/MSB large/SB G19
+
+11:00 - 12:00 – Workshops I 
+    Track 1: Bioconductor on Containers - Beginners
+
+12:00 - 1:00 - Lunch
+
+1:00 - 2:00 - Workshop II
+    Track 1: Bioconductor on Containers - Advanced
+
 # Workshop Description
 
 Bioconductor provides Docker containers which aim to provide isolated

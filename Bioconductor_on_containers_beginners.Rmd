@@ -1,0 +1,63 @@
+---
+title: "Bioconductor on Containers - for beginners"
+author: "Nitesh Turaga"
+date: "5/6/2019"
+output: html_document
+---
+
+## Topics
+
+| Activity                     | Time |
+|------------------------------|------|
+| Why Containers & Why Docker  | 10m  |
+| Bioconductor on Docker       | 10m  |
+| Flavors of Bioconductor      | 10m  |
+| Which flavor to use          | 10m  |
+| How to mount volumes         | 10m  |
+
+## Who is this for?
+
+This workshop is for a beginner. You don't have to have any prior
+experience with Docker or container technology. In this course
+participants are expected to launch Docker images on their local
+machines, mount volumes, and set ports as needed to use RStudio.
+
+Since it's a beginners course, please note that we will be starting at 
+a basic level. The next section of the course, the advanced section will give
+you deeper insight into how container technology can be used on the cloud.
+
+## Why Containers and Why Docker
+
+Docker is the most popular container technology being used today. But
+what is a container?
+
+Container is a completely isolated environment. They can have their own
+processes or services or network interfaces, volume mounts, just like
+a virtual machine. They differ from VM's only in a single aspect, they
+"share" the OS kernel. **Containers are running instances of images.**
+
+Image is static (fixed) and container is a running version of the image. 
+
+TODO: <Docker_Image_vs_Container>
+
+Main Goal: As a user, you want to delegate problems of software installation to the developer (in this case - Bioconductor). Bioconductor gives you these images which solve this issue of software installtion on your infrastructure.
+
+## Bioconductor on Docker 
+
+Bioconductor provides Docker images in a few ways:
+
+1. ** Bioconductor docker images** hosted on Docker Hub, located at https://cloud.docker.com/u/bioconductor/repository/list. The website has information and instructions on how to use them https://bioconductor.org/help/docker/. The Dockerfile(s) for each of these containers is located at https://github.com/Bioconductor/bioc_docker/tree/master/out. These are provided directly by the Bioconductor team and are categorized into,
+
+ - **core** (contains core Bioconductor packages),
+
+ - **base** (`BiocManager` comes with it, you have to install all other Bioconductor packages yourself),
+
+ - and a couple of other flavors, **protmetcore** (proteomics and metabolomics) and  **metabolomics** (additional metabolomics packages).
+
+   It is possible to build on top of these default containers for a customized Bioconductor container. A very good example is given at this [link](https://github.com/waldronlab/bioconductor_devel) which provides Bioconductor [release](https://github.com/waldronlab/bioconductor_release) and [devel](https://github.com/waldronlab/bioconductor_devel) images with the complete set of software needed to build and install over 1600 packages in Bioconductor. This is a very good resource for developers/users who are looking to get an image without having to worry about system requirements. It is also very extendable! (visit @lwaldron and @waldronlab on GitHub for updates on these repositories)
+
+1. **[Bioconda](https://bioconda.github.io/)** provides the [**BioContainers**](https://biocontainers.pro/registry/#/). Bioconda provides a container for each individual package in Bioconductor under the BioContainer umbrella in https://quay.io.
+
+ - They also provide additional "Multi package" container, where you can combine multiple bioconda packages into one container. You may choose a Bioconductor package combination of your desire, and build a container with them. (https://biocontainers.pro/registry/#/multipackage)
+
+1. **[Bioconductor_full](https://github.com/Bioconductor/bioconductor_full) provides the 
