@@ -1,11 +1,16 @@
 ---
-title: "Bioconductor on Containers - for beginners"
+title: "Bioconductor on Containers - Beginners"
 author: "Nitesh Turaga"
 date: "5/6/2019"
 output: html_document
 ---
 
-## Topics
+<style>
+body {
+text-align: justify}
+</style>
+
+# Topics
 
 | Activity                     | Time |
 |------------------------------|------|
@@ -14,50 +19,339 @@ output: html_document
 | Flavors of Bioconductor      | 10m  |
 | Which flavor to use          | 10m  |
 | How to mount volumes         | 10m  |
+| Questions                    | Please interrrupt me!! |
+|||
 
-## Who is this for?
+# Who is this for?
 
-This workshop is for a beginner. You don't have to have any prior
+This workshop is for a **beginner**. You don't have to have any prior
 experience with Docker or container technology. In this course
 participants are expected to launch Docker images on their local
 machines, mount volumes, and set ports as needed to use RStudio.
 
-Since it's a beginners course, please note that we will be starting at 
-a basic level. The next section of the course, the advanced section will give
-you deeper insight into how container technology can be used on the cloud.
+Since it's a beginners course, please note that we will be starting at
+a basic level. The next section of the course, the advanced section
+will give you deeper insight into how container technology can be used
+on the cloud.
 
 ## Why Containers and Why Docker
 
-Docker is the most popular container technology being used today. But
-what is a container?
+A **Container** is a completely isolated environment. They can have
+their own processes or services or network interfaces, volume mounts,
+just like a virtual machine. They differ from VM's only in a single
+aspect, they "share" the OS kernel. **Containers are running instances
+of images.**
 
-Container is a completely isolated environment. They can have their own
-processes or services or network interfaces, volume mounts, just like
-a virtual machine. They differ from VM's only in a single aspect, they
-"share" the OS kernel. **Containers are running instances of images.**
+Docker is simply the most popular container technology being used
+today. An **Image** is static (fixed) template and container is a
+running version of the image. An image can be used to create a
+container.
 
-Image is static (fixed) and container is a running version of the image. 
+```{r image_one, echo=FALSE, out.width='75%'}
+knitr::include_graphics("Docker_images_vs_containers.png")
+```
 
-TODO: <Docker_Image_vs_Container>
+It is important to note, everytime you start a container from an image
+it will take up the same amount of space as the image before you build
+on it.  So, if you start a docker image of 1GB, the container takes up
+1GB. The space being used on your machine is now 2GB. If you start 5
+containers, they take up 1GB each for a container, so you are
+consuming 5GB space.
 
-Main Goal: As a user, you want to delegate problems of software installation to the developer (in this case - Bioconductor). Bioconductor gives you these images which solve this issue of software installtion on your infrastructure.
+**Main reason behind using conatiners**: As a user, you want to
+delegate problems of software installation to the developer (in this
+case - Bioconductor). Bioconductor gives you these static docker
+images which solve this issue of software installtion on your
+infrastructure.
 
-## Bioconductor on Docker 
+## Docker warmup
+
+Get a list of docker images
+
+```
+docker images
+```
+
+Since there is nothing there, let's pull (get) an image specifically
+`bioconductor/release_base2:latest`
+(<organization>/<image_name>:<tag>).  This will take a minute or two.
+
+```
+docker pull bioconductor/release_base2:latest
+```
+
+Run the image to start a container (now we are getting somewhere!)
+
+```
+docker run -p 8787:8787 -e PASSWORD=bioc bioconductor/release_base2
+```
+
+Open a new terminal and you can check to see your container is running, 
+
+```
+docker ps
+```
+
+Kill the container
+
+```
+docker kill <container_id>
+```
+
+Remove the image (you don't want to do this one right now)
+
+```
+docker rmi bioconductor/release_base2
+```
+
+Interactively running docker images ,
+
+```
+## For bash
+docker run -it bioconductor/release_base2 bash
+
+## For R directly
+docker run -it bioconductor/release_base2 R
+```
+
+Interactively run Containers,
+
+```
+## Get the container ID
+docker ps
+```
+
+```
+docker exec -it <continer ID>
+```
+
+## Bioconductor on Docker
+
+In this section we will discuss what flavors are available to users,
+and how to build on these images.
 
 Bioconductor provides Docker images in a few ways:
 
-1. ** Bioconductor docker images** hosted on Docker Hub, located at https://cloud.docker.com/u/bioconductor/repository/list. The website has information and instructions on how to use them https://bioconductor.org/help/docker/. The Dockerfile(s) for each of these containers is located at https://github.com/Bioconductor/bioc_docker/tree/master/out. These are provided directly by the Bioconductor team and are categorized into,
+### [Bioconductor `bioc_docker` images](https://bioconductor.org/help/docker/)
 
- - **core** (contains core Bioconductor packages),
+These images are hosted on [Docker Hub](https://cloud.docker.com/u/bioconductor/repository/list). The
+[bioconductor docker page](https://bioconductor.org/help/docker/) has
+information and instructions on how to use them. The Dockerfile(s) for
+each of these containers is located in
+[github](https://github.com/Bioconductor/bioc_docker/tree/master/out). These
+are provided directly by the Bioconductor team for each supported
+version of Bioconductor and are categorized into,
 
- - **base** (`BiocManager` comes with it, you have to install all other Bioconductor packages yourself),
+1. base2: Contains R, RStudio, and a single Bioconductor package
+   (`BiocManager`, providing the `install()` function for installing
+   additional packages). Also contains many system dependencies for
+   Bioconductor packages.
 
- - and a couple of other flavors, **protmetcore** (proteomics and metabolomics) and  **metabolomics** (additional metabolomics packages).
+1. core2: It contains everything in base2, plus a selection of core
+   Bioconductor packages.
 
-   It is possible to build on top of these default containers for a customized Bioconductor container. A very good example is given at this [link](https://github.com/waldronlab/bioconductor_devel) which provides Bioconductor [release](https://github.com/waldronlab/bioconductor_release) and [devel](https://github.com/waldronlab/bioconductor_devel) images with the complete set of software needed to build and install over 1600 packages in Bioconductor. This is a very good resource for developers/users who are looking to get an image without having to worry about system requirements. It is also very extendable! (visit @lwaldron and @waldronlab on GitHub for updates on these repositories)
+    |Core packages|--|--|--|
+    |--|--|--|--|--|
+    |BiocManager | OrganismDbi| ExperimentHub | Biobase |BiocParallel |
+    |biomaRt |Biostrings |BSgenome | ShortRead |IRanges |
+    |GenomicRanges | GenomicAlignment |GenomicFeatures |SummarizedExperiment |VariantAnnotation |
+    |DelayedArray | GSEABase | Gviz |graph | RBGL| 
+    |Rgraphviz|rmarkdown | httr | knitr| BiocStyle|
+    |--|--|--|--|--|
 
-1. **[Bioconda](https://bioconda.github.io/)** provides the [**BioContainers**](https://biocontainers.pro/registry/#/). Bioconda provides a container for each individual package in Bioconductor under the BioContainer umbrella in https://quay.io.
+1. protmetcore2: It contains everything in core2, plus a selection of
+   core Bioconductor packages recommended for proteomic and
+   metabolomics analysis. Reference section contains list of packages
+   in protmetcore2
 
- - They also provide additional "Multi package" container, where you can combine multiple bioconda packages into one container. You may choose a Bioconductor package combination of your desire, and build a container with them. (https://biocontainers.pro/registry/#/multipackage)
+1. metabolomics2: It contains everything in protmetcore2, plus select
+   packages from the Metabolomics biocView. Reference section contains
+   list of packages in metabolomics2
 
-1. **[Bioconductor_full](https://github.com/Bioconductor/bioconductor_full) provides the 
+1. cytometry2: Built on base2, so it contains everything in base2,
+   plus CytoML and needed dependencies.
+
+It is possible to build on top of these default containers for a
+customized Bioconductor container. This is a very good resource for
+developers/users who are looking to get an image without having to
+worry about system requirements.
+
+We will talk about how to extend these images in the next section.
+
+### [Bioconda](https://bioconda.github.io/) 
+
+Bioconda provides
+[**BioContainers**](https://biocontainers.pro/registry/#/).  Bioconda
+provides a container for each individual package in Bioconductor under
+ the BioContainer umbrella in [Quay.io](https://quay.io).
+
+- They also provide additional "Multi package" container, where you
+can combine multiple bioconda packages into one container. You may
+choose a Bioconductor package combination of your desire, and build a
+container with
+them. (https://biocontainers.pro/registry/#/multipackage)
+
+- But please note that they only contain the "release" version of the
+Bioconductor packages.
+
+### [Bioconductor_full](https://github.com/Bioconductor/bioconductor_full)
+
+Bioconductor is now providing an image with a complete set of system
+dependencies. The goal of this image is, the user should be able
+install every Bioconductor package (1600 +), without having to deal
+with system dependency installation.
+
+This complete image can be obtained from [Docker hub](https://cloud.docker.com/u/bioconductor/repository/docker/bioconductor/bioconductor_full).
+
+```
+docker pull bioconductor/bioconductor_full:devel
+
+docker pull bioconductor/bioconductor_full:RELEASE_3_9
+
+docker pull bioconductor/bioconductor_full:RELEASE_3_8
+```
+
+There are a few exceptions in this list, which are essentially because
+of the way these images are built and provisioned.
+
+## Flavors of Bioconductor
+
+The flavors you need to "need" for your work should be based on the
+packages you want for your analysis.
+
+For most beginners a good place to start is the `core2` docker
+container.
+
+### How to extend the image for your needs
+
+There are two ways, 
+
+1. Reproducible way:
+
+   Create a new folder `my_image`. Inside that folder, in a new file
+   called `Dockerfile`, use the Bioconductor Image most suited for
+   your needs as your base using
+
+		## Inherit from the bioconductor/release_base2 image
+		FROM bioconductor/release_base2 
+
+		## Add packages
+		RUN  R -e "BiocManager::install('<package_name>')"
+		
+   Then inside the build the new docker image,
+	
+		docker build -t my_image:v1 my_image/
+
+2. The interactive way:
+
+	Run the image interactively, with RStudio
+	
+		docker run -e PASSWORD=bioc -p 8787:8787 bioconductor/release_base2
+		
+		or 
+		
+		docker run -it bioconductor/release_base2:latest bash
+		
+	In localhost:8787
+	  
+		BiocManager::install('BiocGenerics')
+		
+	In another terminal window, note the container ID
+	
+		docker ps
+		
+	Save the container state,
+	
+		docker commit <container ID> my_image:v2
+
+## Mount volumes to your Docker container
+
+It is always a good idea to mount a volume either with data or a list
+of installed packages. 
+
+You can bind as many mount volumes as needed with the `-v`/`--volume`
+command. The format is given as
+
+	-v /host/path:/container/path
+
+If you wanted to share data with your docker container, run the
+container with the command, 
+
+	docker run \
+		-v /data:/home/rstudio/data
+		-e PASSWORD=bioc
+		-p 8787:8787
+		bioconductor/release_base2
+
+To share libraries with your Docker container, bioconductor provides a
+way so that the R running within your docker image is able to see the
+packages in your container,
+
+	-v /shared-BioC-3.9:/usr/local/lib/R/host-site-library
+
+This location has special meaning, and the configuration within the
+bioconductor container allows the user to share built packages. The
+path on the docker image that should be mapped to a local R library
+directory is /usr/local/lib/R/host-site-library.
+
+1. Create a directory, on your host machine, (as given as whichever
+   path suits you the best)
+
+		mkdir /shared-BioC-3.9
+
+2. Run the image by sharing that directory
+
+		docker run \
+			-v /shared-BioC-3.9:/usr/local/lib/R/host-site-library \
+			-v /data:/home/rstudio/data \
+			-it bioconductor/release_base2 R
+
+	Within R,
+	
+		BiocManager::install('BiocGenerics')
+
+All the packages in that directory will be directly available to use
+instantly. Another big advantage is, it prevents your docker image
+from growing in size due to package installation and data. This allows
+the users to distribute smaller docker images.
+
+## References
+
+1. List of protmetcore2 packages
+
+```{r protmetcore2_packages, echo=FALSE, message=FALSE}
+library(dplyr)
+library(tibble)
+url <- "http://www.bioconductor.org/packages/3.10/bioc/VIEWS"
+t <- tempfile()
+download.file(url, t)
+dcf <- as_tibble(read.dcf(t), stringsAsFactors=FALSE)
+
+pkgs <- dcf %>% 
+    select(biocViews, Package) %>% 
+    filter(grepl("Metabolomics", biocViews) & grepl("Proteomics", biocViews)) %>%
+    pull()
+
+pkgs
+```
+
+2. List of metabolomics2 packages
+
+```{r metabolomics2_packages, echo=FALSE, message=FALSE}
+pkgs <- dcf %>% 
+    select(biocViews, Package) %>% 
+    filter(grepl("Metabolomics", biocViews)) %>%
+    pull()
+
+pkgs
+```
+
+## Conclusion of Beginners section
+
+```{r}
+sessionInfo()
+```
+
+
+
+

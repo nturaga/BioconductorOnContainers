@@ -36,11 +36,26 @@ on cloud services and also on HPC infrastructure with Singularity.
 * Basic knowledge of R syntax / how to install packages the
   Bioconductor way (using `BiocManager()`).
 
-* Docker needs to be installed on your local machine. Please
-  [install](https://docs.docker.com/install/) Docker ahead of time. If
-  you are planning to attend this workshop and are having issues
-  installing Docker please email me ahead of time, I will help you
-  through it.
+* IMPORTANT: Docker needs to be installed on your local
+  machine. Please [install](https://docs.docker.com/install/) Docker
+  ahead of time. If you are planning to attend this workshop and are
+  having issues installing Docker please email me ahead of time, I
+  will help you through it. Please do not attend the workshop without
+  installing Docker on your machine. 
+  
+  To [test installation of Docker](https://docs.docker.com/get-started/),
+  please run on your command line, 
+  
+		$ docker run hello-world
+		
+		Unable to find image 'hello-world:latest' locally
+		latest: Pulling from library/hello-world
+		ca4f61b1923c: Pull complete
+		Digest: sha256:ca0eeb6fb05351dfc8759c20733c91def84cb8007aa89a5bf606bc8b315b9fc7
+		Status: Downloaded newer image for hello-world:latest
+
+		Hello from Docker!
+		This message shows that your installation appears to be working correctly.
 
 * Some familiarity with HPC infrastructure (if this is relevant to
   participant).
