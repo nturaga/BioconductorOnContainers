@@ -1,6 +1,6 @@
 Package: BioconductorOnContainers
 Title: Use Bioconductor on Containers 
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Nitesh",
            family = "Turaga",
@@ -16,3 +16,10 @@ Description: This package provides a vignette describing how to use
 	     such as Docker.
 License: MIT
 Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+VignetteBuilder:
+	knitr,
+	rmarkdown
+Suggests: BiocStyle, knitr, rmarkdown
+
