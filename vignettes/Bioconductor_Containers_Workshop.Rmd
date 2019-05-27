@@ -345,33 +345,85 @@ Recap of items you have learnt in this section,
 
 ### Containers on the cloud
 
-It is easy to launch Docker on the cloud as well.
+#### Requirements
+
+1. Google cloud billing account
+
+	Protip: Create a test google account and you get $300 in billing
+    credits for a year. You have to link your credit card to this, so
+    make sure you don't leave any google cloud resources running. You
+    will go through your $300 USD in credit very quickly.
+	
+	NOTE: The user is responsible for keeping track of their billing
+    account. 
+
+1. You should also have taken the beginners course or at the very
+   least have a basic understanding of Docker. If you have missed the
+   earlier section pleaes refer back to it for any gaps in the
+   information in this section.
+   
+1. `Google Cloud SDK` needs to be installed, and command line callable
+   using `gcloud auth login`.
+   
+#### Launch a container on the Google cloud
 
 There are a couple of ways this can be done, one is using the a
 service on different cloud provides called "Container Engines", the
-other by natively installing `docker` as a service on compute
-instance.
+other by natively using the compute engine service and launching a
+container with a specific image.
 
-[Install Docker on Gcloud Ubuntu VM](https://github.com/nturaga/gcloud_docker_install/blob/master/docker_install.sh)
-with the help of this script.
+```
+## Launch bioconductor/release_base2:latest image
+gcloud compute instances create-with-container bioc-rstudio \
+    --container-image bioconductor/release_base2:latest \
+    --container-restart-policy never \
+##    --container-privileged \
+    --container-env PASSWORD=bioc \
+    --tags http-server
 
-Once Docker is installed it's easy to run a container just like you would on a local machine.
+## Create a firewall
+gcloud compute firewall-rules create allow-http \
+       --allow tcp:8787 --target-tags http-server
+
+## List running compute instances
+gcloud compute instances list
+
+## Stop an instance, NOTE: terminating the instance is your problem!
+gcloud compute instances stop rstudio
+
+## Log in to the VM
+gcloud compute ssh bioc-rstudio
+```
+
+[Google Cloud documentation to configure containers](https://cloud.google.com/compute/docs/containers/configuring-options-to-run-containers)
 
 ### Mount volumes on the cloud
 
-
+You can mount volumes on your VM to your container.
 
 ### Localize select packages
 
+Bioconductor provides the 
 
 ### HPC-Singularity containers
 
+A few Singularity hub containers you can use on your 
+
+<TODO: HPC singularity brief description>
+
+https://github.com/nturaga/biocparallel_singularity
 
 ### Launch and run parallel jobs
 
+Use BiocParallel to launch and run jobs on Singularity containers
 
 ### Future work
 
+- Kubernetes
+
+- Helm charts
+
+- Potentially CVMFS
 
 ## References
 
@@ -410,3 +462,4 @@ pkgs
 sessionInfo()
 ```
 
+B
