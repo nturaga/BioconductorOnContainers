@@ -1,16 +1,21 @@
 ---
-title: "Bioconductor on Containers - Beginners"
-author: "Nitesh Turaga"
-date: "5/6/2019"
-output: html_document
+output:
+  rmarkdown::html_document:
+    highlight: pygments
+    toc: true
+    toc_depth: 3
+    fig_width: 5
+bibliography: "`r file.path(system.file(package='Bioconductor_Containers_Workshop
+', 'vignettes'), 'bibliography.bib')`"
+vignette: >
+  %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding[utf8]{inputenc}
 ---
 
-<style>
-body {
-text-align: justify}
-</style>
+# Bioconductor on Containers
 
-# Topics
+## Beginners section - Topics
 
 | Activity                     | Time |
 |------------------------------|------|
@@ -20,9 +25,8 @@ text-align: justify}
 | Which flavor to use          | 10m  |
 | How to mount volumes         | 10m  |
 | Questions                    | Please interrrupt me!! |
-|||
 
-# Who is this for?
+### Who is this for?
 
 This workshop is for a **beginner**. You don't have to have any prior
 experience with Docker or container technology. In this course
@@ -34,7 +38,7 @@ a basic level. The next section of the course, the advanced section
 will give you deeper insight into how container technology can be used
 on the cloud.
 
-## Why Containers and Why Docker
+### Why Containers and Why Docker
 
 A **Container** is a completely isolated environment. They can have
 their own processes or services or network interfaces, volume mounts,
@@ -48,7 +52,12 @@ running version of the image. An image can be used to create a
 container.
 
 ```{r image_one, echo=FALSE, out.width='75%'}
-knitr::include_graphics("Docker_images_vs_containers.png")
+knitr::include_graphics(
+    system.file("inst/vignettes", 
+                "Docker_images_vs_containers.png", 
+                package = "Bioconductor_Containers_Workshop"
+                )
+    )
 ```
 
 It is important to note, everytime you start a container from an image
@@ -64,7 +73,7 @@ case - Bioconductor). Bioconductor gives you these static docker
 images which solve this issue of software installtion on your
 infrastructure.
 
-## Docker warmup
+### Docker warmup
 
 Get a list of docker images
 
@@ -86,7 +95,7 @@ Run the image to start a container (now we are getting somewhere!)
 docker run -p 8787:8787 -e PASSWORD=bioc bioconductor/release_base2
 ```
 
-Open a new terminal and you can check to see your container is running, 
+Open a new terminal and you can check to see your container is running,
 
 ```
 docker ps
@@ -125,14 +134,14 @@ docker ps
 docker exec -it <continer ID>
 ```
 
-## Bioconductor on Docker
+### Bioconductor on Docker
 
 In this section we will discuss what flavors are available to users,
 and how to build on these images.
 
 Bioconductor provides Docker images in a few ways:
 
-### [Bioconductor `bioc_docker` images](https://bioconductor.org/help/docker/)
+#### [Bioconductor `bioc_docker` images](https://bioconductor.org/help/docker/)
 
 These images are hosted on [Docker Hub](https://cloud.docker.com/u/bioconductor/repository/list). The
 [bioconductor docker page](https://bioconductor.org/help/docker/) has
@@ -155,7 +164,7 @@ version of Bioconductor and are categorized into,
     |BiocManager | OrganismDbi| ExperimentHub | Biobase |BiocParallel |
     |biomaRt |Biostrings |BSgenome | ShortRead |IRanges |
     |GenomicRanges | GenomicAlignment |GenomicFeatures |SummarizedExperiment |VariantAnnotation |
-    |DelayedArray | GSEABase | Gviz |graph | RBGL| 
+    |DelayedArray | GSEABase | Gviz |graph | RBGL|
     |Rgraphviz|rmarkdown | httr | knitr| BiocStyle|
     |--|--|--|--|--|
 
@@ -178,7 +187,7 @@ worry about system requirements.
 
 We will talk about how to extend these images in the next section.
 
-### [Bioconda](https://bioconda.github.io/) 
+#### [Bioconda](https://bioconda.github.io/)
 
 Bioconda provides
 [**BioContainers**](https://biocontainers.pro/registry/#/).  Bioconda
@@ -194,7 +203,7 @@ them. (https://biocontainers.pro/registry/#/multipackage)
 - But please note that they only contain the "release" version of the
 Bioconductor packages.
 
-### [Bioconductor_full](https://github.com/Bioconductor/bioconductor_full)
+#### [Bioconductor_full](https://github.com/Bioconductor/bioconductor_full)
 
 Bioconductor is now providing an image with a complete set of system
 dependencies. The goal of this image is, the user should be able
@@ -214,7 +223,7 @@ docker pull bioconductor/bioconductor_full:RELEASE_3_8
 There are a few exceptions in this list, which are essentially because
 of the way these images are built and provisioned.
 
-## Flavors of Bioconductor
+### Flavors of Bioconductor
 
 The flavors you need to "need" for your work should be based on the
 packages you want for your analysis.
@@ -222,9 +231,9 @@ packages you want for your analysis.
 For most beginners a good place to start is the `core2` docker
 container.
 
-### How to extend the image for your needs
+#### How to extend the image for your needs
 
-There are two ways, 
+There are two ways,
 
 1. Reproducible way:
 
@@ -233,41 +242,41 @@ There are two ways,
    your needs as your base using
 
 		## Inherit from the bioconductor/release_base2 image
-		FROM bioconductor/release_base2 
+		FROM bioconductor/release_base2
 
 		## Add packages
 		RUN  R -e "BiocManager::install('<package_name>')"
-		
+
    Then inside the build the new docker image,
-	
+
 		docker build -t my_image:v1 my_image/
 
 2. The interactive way:
 
 	Run the image interactively, with RStudio
-	
+
 		docker run -e PASSWORD=bioc -p 8787:8787 bioconductor/release_base2
-		
-		or 
-		
+
+		or
+
 		docker run -it bioconductor/release_base2:latest bash
-		
+
 	In localhost:8787
-	  
+
 		BiocManager::install('BiocGenerics')
-		
+
 	In another terminal window, note the container ID
-	
+
 		docker ps
-		
+
 	Save the container state,
-	
+
 		docker commit <container ID> my_image:v2
 
-## Mount volumes to your Docker container
+### Mount volumes to your Docker container
 
 It is always a good idea to mount a volume either with data or a list
-of installed packages. 
+of installed packages.
 
 You can bind as many mount volumes as needed with the `-v`/`--volume`
 command. The format is given as
@@ -275,7 +284,7 @@ command. The format is given as
 	-v /host/path:/container/path
 
 If you wanted to share data with your docker container, run the
-container with the command, 
+container with the command,
 
 	docker run \
 		-v /data:/home/rstudio/data
@@ -307,13 +316,62 @@ directory is /usr/local/lib/R/host-site-library.
 			-it bioconductor/release_base2 R
 
 	Within R,
-	
+
 		BiocManager::install('BiocGenerics')
 
 All the packages in that directory will be directly available to use
 instantly. Another big advantage is, it prevents your docker image
 from growing in size due to package installation and data. This allows
 the users to distribute smaller docker images.
+
+
+### Conclusion of Beginners section
+
+Recap of items you have learnt in this section,
+
+
+## Advanced section - Topics
+
+| Activity                     | Time |
+|------------------------------|------|
+| Containers on the cloud          | 10m  |
+| Mount volumes on the cloud   | 10m  |
+| Localize select packages     | 10m  |
+| HPC-Singularity containers   | 5m   |
+| Launch and run parallel jobs | 10m  |
+| Questions                    | 10m+ |
+| Future work                  | 5m   |
+
+
+### Containers on the cloud
+
+It is easy to launch Docker on the cloud as well.
+
+There are a couple of ways this can be done, one is using the a
+service on different cloud provides called "Container Engines", the
+other by natively installing `docker` as a service on compute
+instance.
+
+[Install Docker on Gcloud Ubuntu VM](https://github.com/nturaga/gcloud_docker_install/blob/master/docker_install.sh)
+with the help of this script.
+
+Once Docker is installed it's easy to run a container just like you would on a local machine.
+
+### Mount volumes on the cloud
+
+
+
+### Localize select packages
+
+
+### HPC-Singularity containers
+
+
+### Launch and run parallel jobs
+
+
+### Future work
+
 
 ## References
 
@@ -327,8 +385,8 @@ t <- tempfile()
 download.file(url, t)
 dcf <- as_tibble(read.dcf(t), stringsAsFactors=FALSE)
 
-pkgs <- dcf %>% 
-    select(biocViews, Package) %>% 
+pkgs <- dcf %>%
+    select(biocViews, Package) %>%
     filter(grepl("Metabolomics", biocViews) & grepl("Proteomics", biocViews)) %>%
     pull()
 
@@ -338,20 +396,17 @@ pkgs
 2. List of metabolomics2 packages
 
 ```{r metabolomics2_packages, echo=FALSE, message=FALSE}
-pkgs <- dcf %>% 
-    select(biocViews, Package) %>% 
+pkgs <- dcf %>%
+    select(biocViews, Package) %>%
     filter(grepl("Metabolomics", biocViews)) %>%
     pull()
 
 pkgs
 ```
 
-## Conclusion of Beginners section
+### sessionInfo
 
 ```{r}
 sessionInfo()
 ```
-
-
-
 
