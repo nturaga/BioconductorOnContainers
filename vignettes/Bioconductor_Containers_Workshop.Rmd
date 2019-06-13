@@ -1,12 +1,10 @@
 ---
 output:
   rmarkdown::html_document:
-    highlight: pygments
-    toc: true
-    toc_depth: 3
-    fig_width: 5
-bibliography: "`r file.path(system.file(package='Bioconductor_Containers_Workshop
-', 'vignettes'), 'bibliography.bib')`"
+	highlight: pygments
+	toc: true
+	toc_depth: 3
+	fig_width: 5
 vignette: >
   %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
   %\VignetteEngine{knitr::rmarkdown}
@@ -51,13 +49,13 @@ today. An **Image** is static (fixed) template and container is a
 running version of the image. An image can be used to create a
 container.
 
-```{r image_one, echo=FALSE, out.width='75%'}
+```{r image_one, echo=FALSE, out.width='75%', eval=FALSE}
 knitr::include_graphics(
-    system.file("inst/vignettes", 
-                "Docker_images_vs_containers.png", 
-                package = "Bioconductor_Containers_Workshop"
-                )
-    )
+	system.file("inst/vignettes",
+				"Docker_images_vs_containers.png",
+				package = "Bioconductor_Containers_Workshop"
+				)
+	)
 ```
 
 It is important to note, every time you start a container from an image
@@ -159,14 +157,14 @@ version of Bioconductor and are categorized into,
 1. core2: It contains everything in base2, plus a selection of core
    Bioconductor packages.
 
-    |Core packages|--|--|--|
-    |--|--|--|--|--|
-    |BiocManager | OrganismDbi| ExperimentHub | Biobase |BiocParallel |
-    |biomaRt |Biostrings |BSgenome | ShortRead |IRanges |
-    |GenomicRanges | GenomicAlignment |GenomicFeatures |SummarizedExperiment |VariantAnnotation |
-    |DelayedArray | GSEABase | Gviz |graph | RBGL|
-    |Rgraphviz|rmarkdown | httr | knitr| BiocStyle|
-    |--|--|--|--|--|
+	|Core packages|--|--|--|
+	|--|--|--|--|--|
+	|BiocManager | OrganismDbi| ExperimentHub | Biobase |BiocParallel |
+	|biomaRt |Biostrings |BSgenome | ShortRead |IRanges |
+	|GenomicRanges | GenomicAlignment |GenomicFeatures |SummarizedExperiment |VariantAnnotation |
+	|DelayedArray | GSEABase | Gviz |graph | RBGL|
+	|Rgraphviz|rmarkdown | httr | knitr| BiocStyle|
+	|--|--|--|--|--|
 
 1. protmetcore2: It contains everything in core2, plus a selection of
    core Bioconductor packages recommended for proteomic and
@@ -335,7 +333,7 @@ Re cap of items you have learnt in this section,
 
 | Activity                     | Time |
 |------------------------------|------|
-| Containers on the cloud          | 10m  |
+| Containers on the cloud      | 10m  |
 | Mount volumes on the cloud   | 10m  |
 | Localize select packages     | 10m  |
 | HPC-Singularity containers   | 5m   |
@@ -346,55 +344,102 @@ Re cap of items you have learnt in this section,
 
 ### Containers on the cloud
 
+Running your R session on the cloud with RStudio makes you
+'machine-independent'. It also allows you to access data hosted on the
+cloud cheaper/faster to access.
+
+One of the biggest advantages to cloud machines is the on-demand
+scalability to run programs.
+
+In this section, there will be a demonstration showing the usability
+with the Google cloud Infrastructure, but take note that everything
+you can do on the Google Cloud you can do with AWS as well
+(https://cloud.google.com/docs/compare/aws/). There are scripts
+included in this package regarding deployment of infrastructure on the
+AWS cloud, but the demo will focus on the google cloud.
+
 #### Requirements
 
 1. Google cloud billing account
 
-	Pro-tip: Create a test google account and you get $300 in billing
-    credits for a year. You have to link your credit card to this, so
-    make sure you don't leave any google cloud resources running. You
-    will go through your $300 USD in credit very quickly.
-	
+	Pro-tip: Create a test google account (or try cloud.google.com for
+	the first time from your google account) to get $300 in billing
+	credits for a year. You have to link your credit card to this, so
+	make sure you don't leave any google cloud resources running. You
+	will go through your $300 USD in credit very quickly if you run
+	large compute instances. (https://cloud.google.com/free/)
+
 	NOTE: The user is responsible for keeping track of their billing
-    account. 
+	account and any credit cards they use for their workshop progress.
 
 1. You should also have taken the beginners course or at the very
    least have a basic understanding of Docker. If you have missed the
    earlier section please refer back to it for any gaps in the
    information in this section.
-   
+
 1. `Google Cloud SDK` needs to be installed, and command line callable
    using `gcloud auth login`.
-   
+
 #### Launch a container on the Google cloud
 
 There are a couple of ways this can be done, one is using the a
-service on different cloud provides called "Container Engines", the
-other by natively using the compute engine service and launching a
-container with a specific image.
+service on that the google cloud provides called "Container Engine",
+the other by natively using the "Compute Engine" service and launching
+a container with a specific image stored either on the "Google
+Container Registry" (google's Dockerhub) or Dockerhub itself.
 
-```
-## Launch bioconductor/release_base2:latest image
-gcloud compute instances create-with-container bioc-rstudio \
-    --container-image bioconductor/release_base2:latest \
-    --container-restart-policy never \
-##    --container-privileged \
-    --container-env PASSWORD=bioc \
-    --tags http-server
+##### Using the Google Container Engine
 
-## Create a firewall
-gcloud compute firewall-rules create allow-http \
-       --allow tcp:8787 --target-tags http-server
+1. Launch a Bioconductor docker image on the Google Cloud using the
+   command line application `gcloud`.
 
-## List running compute instances
-gcloud compute instances list
+   In this demo, we use the `bioconductor/release_base2:latest`, which
+   are hosted on dockerhub. There are a few additional settings to be
+   aware of in this case since we'll be using RStudio as the interface
+   for R.
 
-## Stop an instance, NOTE: terminating the instance is your problem!
-gcloud compute instances stop rstudio
+   These containers running on the a cloud *instance* (read: a
+   computer accessible remotely) need to accessible via the HTTP
+   protocol at a specific port (*8787* for RStudio). For this we need
+   to create a firewall rule which allows HTTP access at that port 8787.
 
-## Log in to the VM
-gcloud compute ssh bioc-rstudio
-```
+		## Launch bioconductor/release_base2:latest image
+		gcloud compute instances create-with-container bioc-rstudio \
+			--container-image bioconductor/release_base2:latest \
+			--container-restart-policy never \
+			--container-env PASSWORD=bioc \
+			--tags http-server
+
+   These containers running on the a cloud *instance* (read: a
+   computer accessible remotely) need to accessible via the HTTP
+   protocol at a specific port (*8787* for RStudio). For this we need
+   to create a firewall rule which allows HTTP access at that port
+   8787.
+
+		## Create a firewall
+		gcloud compute firewall-rules create allow-http \
+			--allow tcp:8787
+			--target-tags http-server
+
+   You can now list the running instances you have to check if your
+   container started.
+
+		## List running compute instances
+		gcloud compute instances list
+
+   Once you are done using the instance, you might want to stop
+   it. This avoids running up the bill on your google cloud
+   project. When you are ready to restart it is easy enough to restart.
+
+		## Stop an instance, NOTE: terminating the instance is your problem!
+		gcloud compute instances stop bioc-rstudio
+
+   You can also log into your VM on the google cloud and provision any
+   data you need.
+
+		## Log in to the VM
+		gcloud compute ssh bioc-rstudio
+
 
 [Google Cloud documentation to configure containers](https://cloud.google.com/compute/docs/containers/configuring-options-to-run-containers)
 
@@ -404,11 +449,45 @@ You can mount volumes on your VM to your container.
 
 ### Localize select packages
 
-Bioconductor provides the 
+For faster installation of packages on Bioconductor cloud
+installtions, we provide google buckets with all the software packages
+which are pre-compiled.
+
+Bioconductor provides the entire pre-compiled binary libraries for the
+following versions of R and Bioconductor. These are publicly
+accessible buckets.
+
+NOTE: 'Requester Pays' (aka: You) for the access to these buckets
+(https://cloud.google.com/storage/docs/requester-pays). So by
+accessing the data on these packages to be downloaded on to your Cloud
+instance your billing project gets charged.
+
+| Bioconductor Version | R version | Google Bucket Name | Link |
+|----------------------|-----------|--------------------|------|
+| Bioc 3.10 | R devel | gs://bioconductor-full-devel      | https://console.cloud.google.com/storage/browser/bioconductor-full-devel      |
+| Bioc 3.9  | R 3.6.0 | gs://bioconductor-full-release-3-9| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-9|
+| Bioc 3.8  | R 3.5.0 | gs://bioconductor-full-release-3-8| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-8|
+|----------------------|-----------|--------------------|------|
+
+To copy packages over to the instance,
+
+	## Get the name of your billing project
+	gcloud config list project
+
+	## Copy packages over to your local directory
+	gsutil \
+		-u <name-of-billing-project> \
+		-m \
+		cp -r gs://biocondcutor-full-devel/<package_name> <local_directory>
+
+
+<TODO> : Should there be a quickly designed R package to do this for
+the users? GoogleCloudBiocInstaller
+
 
 ### HPC-Singularity containers
 
-A few Singularity hub containers you can use on your 
+A few Singularity hub containers you can use on your
 
 <TODO: HPC singularity brief description>
 
@@ -422,7 +501,11 @@ Use BiocParallel to launch and run jobs on Singularity containers
 
 - Kubernetes
 
+
+
 - Helm charts
+
+
 
 ## References
 
@@ -437,9 +520,9 @@ download.file(url, t)
 dcf <- as_tibble(read.dcf(t), stringsAsFactors=FALSE)
 
 pkgs <- dcf %>%
-    select(biocViews, Package) %>%
-    filter(grepl("Metabolomics", biocViews) & grepl("Proteomics", biocViews)) %>%
-    pull()
+	select(biocViews, Package) %>%
+	filter(grepl("Metabolomics", biocViews) & grepl("Proteomics", biocViews)) %>%
+	pull()
 
 pkgs
 ```
@@ -448,9 +531,9 @@ pkgs
 
 ```{r metabolomics2_packages, echo=FALSE, message=FALSE}
 pkgs <- dcf %>%
-    select(biocViews, Package) %>%
-    filter(grepl("Metabolomics", biocViews)) %>%
-    pull()
+	select(biocViews, Package) %>%
+	filter(grepl("Metabolomics", biocViews)) %>%
+	pull()
 
 pkgs
 ```
@@ -460,5 +543,3 @@ pkgs
 ```{r}
 sessionInfo()
 ```
-
-B
