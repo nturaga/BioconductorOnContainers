@@ -24,7 +24,7 @@ vignette: >
 | Flavors of Bioconductor      | 10m  |
 | Which flavor to use          | 10m  |
 | How to mount volumes         | 10m  |
-| Questions                    | Please interrrupt me!! |
+| Questions                    | Please interrupt me!! |
 
 ### Who is this for?
 
@@ -60,17 +60,17 @@ knitr::include_graphics(
     )
 ```
 
-It is important to note, everytime you start a container from an image
+It is important to note, every time you start a container from an image
 it will take up the same amount of space as the image before you build
 on it.  So, if you start a docker image of 1GB, the container takes up
 1GB. The space being used on your machine is now 2GB. If you start 5
 containers, they take up 1GB each for a container, so you are
 consuming 5GB space.
 
-**Main reason behind using conatiners**: As a user, you want to
+**Main reason behind using containers**: As a user, you want to
 delegate problems of software installation to the developer (in this
 case - Bioconductor). Bioconductor gives you these static docker
-images which solve this issue of software installtion on your
+images which solve this issue of software installation on your
 infrastructure.
 
 ### Docker warmup
@@ -131,7 +131,7 @@ docker ps
 ```
 
 ```
-docker exec -it <continer ID>
+docker exec -it <container ID>
 ```
 
 ### Bioconductor on Docker
@@ -225,8 +225,9 @@ of the way these images are built and provisioned.
 
 ### Flavors of Bioconductor
 
-The flavors you need to "need" for your work should be based on the
-packages you want for your analysis.
+The flavors you "need" for your work should be based on the packages
+you want for your analysis. There are a list of packages for each
+flavor you should evaluate before using the container.
 
 For most beginners a good place to start is the `core2` docker
 container.
@@ -327,7 +328,7 @@ the users to distribute smaller docker images.
 
 ### Conclusion of Beginners section
 
-Recap of items you have learnt in this section,
+Re cap of items you have learnt in this section,
 
 
 ## Advanced section - Topics
@@ -349,7 +350,7 @@ Recap of items you have learnt in this section,
 
 1. Google cloud billing account
 
-	Protip: Create a test google account and you get $300 in billing
+	Pro-tip: Create a test google account and you get $300 in billing
     credits for a year. You have to link your credit card to this, so
     make sure you don't leave any google cloud resources running. You
     will go through your $300 USD in credit very quickly.
@@ -359,7 +360,7 @@ Recap of items you have learnt in this section,
 
 1. You should also have taken the beginners course or at the very
    least have a basic understanding of Docker. If you have missed the
-   earlier section pleaes refer back to it for any gaps in the
+   earlier section please refer back to it for any gaps in the
    information in this section.
    
 1. `Google Cloud SDK` needs to be installed, and command line callable
@@ -422,8 +423,6 @@ Use BiocParallel to launch and run jobs on Singularity containers
 - Kubernetes
 
 - Helm charts
-
-- Potentially CVMFS
 
 ## References
 
