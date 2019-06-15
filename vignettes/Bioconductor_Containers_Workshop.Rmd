@@ -14,7 +14,7 @@ vignette: >
 # Bioconductor on Containers
 
 ## Beginners section - Topics
-
+	
 | Activity                     | Time |
 |------------------------------|------|
 | Why Containers & Why Docker  | 10m  |
@@ -197,6 +197,7 @@ can combine multiple bioconda packages into one container. You may
 choose a Bioconductor package combination of your desire, and build a
 container with
 them. (https://biocontainers.pro/registry/#/multipackage)
+https://biocontainers.pro/#/multipackage
 
 - But please note that they only contain the "release" version of the
 Bioconductor packages.
@@ -344,9 +345,9 @@ Re cap of items you have learnt in this section,
 
 ### Containers on the cloud
 
-Running your R session on the cloud with RStudio makes you
-'machine-independent'. It also allows you to access data hosted on the
-cloud cheaper/faster to access.
+Running your R session on the cloud with RStudio makes you 'machine
+independent'. It also allows you to access data hosted on the cloud
+cheaper and faster.
 
 One of the biggest advantages to cloud machines is the on-demand
 scalability to run programs.
@@ -354,15 +355,13 @@ scalability to run programs.
 In this section, there will be a demonstration showing the usability
 with the Google cloud Infrastructure, but take note that everything
 you can do on the Google Cloud you can do with AWS as well
-(https://cloud.google.com/docs/compare/aws/). There are scripts
-included in this package regarding deployment of infrastructure on the
-AWS cloud, but the demo will focus on the google cloud.
+(https://cloud.google.com/docs/compare/aws/).
 
 #### Requirements
 
 1. Google cloud billing account
 
-	Pro-tip: Create a test google account (or try cloud.google.com for
+	Pro Tip: Create a test google account (or try the google cloud for
 	the first time from your google account) to get $300 in billing
 	credits for a year. You have to link your credit card to this, so
 	make sure you don't leave any google cloud resources running. You
@@ -384,9 +383,10 @@ AWS cloud, but the demo will focus on the google cloud.
 
 There are a couple of ways this can be done, one is using the a
 service on that the google cloud provides called "Container Engine",
-the other by natively using the "Compute Engine" service and launching
-a container with a specific image stored either on the "Google
-Container Registry" (google's Dockerhub) or Dockerhub itself.
+the other by natively using the "Compute Engine" service, installing
+docker, and launching a container with a specific image stored either
+on the "Google Container Registry" (google's Dockerhub) or Dockerhub
+itself.
 
 ##### Using the Google Container Engine
 
@@ -449,18 +449,13 @@ You can mount volumes on your VM to your container.
 
 ### Localize select packages
 
-For faster installation of packages on Bioconductor cloud
-installtions, we provide google buckets with all the software packages
-which are pre-compiled.
+For faster installation of packages from Bioconductor on cloud based
+instances, as provide as a demonstration ONLY google storage buckets with
+all the software packages which are pre-compiled (1600+).
 
 Bioconductor provides the entire pre-compiled binary libraries for the
 following versions of R and Bioconductor. These are publicly
 accessible buckets.
-
-NOTE: 'Requester Pays' (aka: You) for the access to these buckets
-(https://cloud.google.com/storage/docs/requester-pays). So by
-accessing the data on these packages to be downloaded on to your Cloud
-instance your billing project gets charged.
 
 | Bioconductor Version | R version | Google Bucket Name | Link |
 |----------------------|-----------|--------------------|------|
@@ -469,7 +464,12 @@ instance your billing project gets charged.
 | Bioc 3.8  | R 3.5.0 | gs://bioconductor-full-release-3-8| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-8|
 |----------------------|-----------|--------------------|------|
 
-To copy packages over to the instance,
+NOTE: 'Requester Pays' (aka: You) for the access to these buckets
+(https://cloud.google.com/storage/docs/requester-pays). So by
+accessing the data on these packages to be downloaded on to your Cloud
+instance your billing project gets charged.
+
+To copy packages over to the instance, using the command line:
 
 	## Get the name of your billing project
 	gcloud config list project
@@ -480,10 +480,8 @@ To copy packages over to the instance,
 		-m \
 		cp -r gs://biocondcutor-full-devel/<package_name> <local_directory>
 
-
 <TODO> : Should there be a quickly designed R package to do this for
 the users? GoogleCloudBiocInstaller
-
 
 ### HPC-Singularity containers
 
@@ -499,13 +497,51 @@ Use BiocParallel to launch and run jobs on Singularity containers
 
 ### Future work
 
-- Kubernetes
+There is quite a bit of work in progress making Bioconductor meet data
+analysis requirements on the cloud for a range of work.
 
+1. BiocParallel::RedisParam
 
+	It is based on the *redis* data-structure (https://redis.io/).
 
-- Helm charts
+	Github link: https://github.com/mtmorgan/RedisParam/tree/master
+	
+	This package provides a redis-based back-end for BiocParallel,
+    enabling an alternative, modern mechanism for distributed
+    computation.
+	
+	This is yet to be integrated into BiocParallel. The *RedisParam*
+    backend allows computation to be distributed across instances or
+    containers running on the cloud. To explain the way the RedisParam
+    functions, think of 5 worker instances waiting to to hear from a
+    single manager instance which sends a job or multiple jobs.
 
+2. Kubernetes
 
+	As the next iteration of our efforts on the cloud, we needed
+    RedisParam to be working on a container orchestration technology
+    like Kubernetes.
+	
+	We use Kubernetes to deploy the "cluster" on the cloud,
+    scalability and to automate management of the deployment to free
+    the user from mundane tasks such as worrying if a worker node has
+    failed.
+	
+	<TODO:> moved to Bioconductor
+	Link: https://github.com/Bioconductor/k8s-redis-bioc-example/tree/master/k8s
+	
+3. Helm charts
+
+	[helm.sh](www.helm.sh) is a package manager for Kubernetes. Once
+    we created the Kubernetes deployment for RedisParam we wanted to
+    make sure it's easily distributed and used in the community.
+
+	Helm basically works on templating the K8s deployment and making a
+    distributable tarball (or package).
+
+	<Short Demo of Helm/K8S on google cloud>
+
+	Link: https://github.com/mtmorgan/k8s-redis-bioc-example/tree/master/helm-chart
 
 ## References
 
@@ -514,6 +550,7 @@ Use BiocParallel to launch and run jobs on Singularity containers
 ```{r protmetcore2_packages, echo=FALSE, message=FALSE}
 library(dplyr)
 library(tibble)
+## TODO: biocpkgtools oneliner to get dcf file
 url <- "http://www.bioconductor.org/packages/3.10/bioc/VIEWS"
 t <- tempfile()
 download.file(url, t)
