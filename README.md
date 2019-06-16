@@ -6,7 +6,7 @@ Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga](https://githu
 
 # Schedule
 
-NOTE: Since the workshop is broken into pre-lunch and post-lunch session, i've decided to break up the topics into two sessions. I recommend attending both to get a complete idea of the Bioconductor ecosystem on containers and how to use them.
+NOTE: Since the workshop is broken into pre-lunch and post-lunch session, it will be broekn up into two sessions. The recommendation is to attend both to get a complete idea of the Bioconductor ecosystem on containers and how to use them.
 
 https://bioc2019.bioconductor.org/schedule-developer-day
 
@@ -38,10 +38,12 @@ on cloud services and also on HPC infrastructure with Singularity.
 
 * IMPORTANT: Docker needs to be installed on your local
   machine. Please [install](https://docs.docker.com/install/) Docker
-  ahead of time. If you are planning to attend this workshop and are
-  having issues installing Docker please email me ahead of time, I
-  will help you through it. Please do not attend the workshop without
-  installing Docker on your machine. 
+  ahead of time. 
+  
+  **Getting Help**: If you are planning to attend this workshop and are
+  having issues installing Docker please ask (email/find me at the conference) 
+  me ahead of time, I will help you through it. Please do not ask for help 
+  installing docker during the workshop. 
   
   To [test installation of Docker](https://docs.docker.com/get-started/),
   please run on your command line, 
@@ -56,6 +58,16 @@ on cloud services and also on HPC infrastructure with Singularity.
 
 		Hello from Docker!
 		This message shows that your installation appears to be working correctly.
+
+* IMPORTANT: After installing docker, be sure to pull an image which 
+  we will use in class. This is a pretty big 'download' so make sure 
+  to run it before the workshop starts, otherwise there will be some 
+  lag. Run the command,
+
+        $ docker pull bioconductor/release_base2:latest
+
+  **Getting Help**: Please email/find me if you are unable to pull this
+  image for any reason.  
 
 * Some familiarity with HPC infrastructure (if this is relevant to
   participant).
@@ -83,19 +95,28 @@ usage of Docker, and participants are exptected to follow along.
 
 An example for a 1 hour 45-minute workshop:
 
+### Beginners section - Topics
+	
 | Activity                     | Time |
 |------------------------------|------|
-| Why Docker                   | 10m  |
+| Why Containers & Why Docker  | 10m  |
 | Bioconductor on Docker       | 10m  |
 | Flavors of Bioconductor      | 10m  |
 | Which flavor to use          | 10m  |
 | How to mount volumes         | 10m  |
-| Docker on the cloud          | 10m  |
+| Questions                    | Please interrupt me!! |
+
+### Advanced section - Topics
+
+| Activity                     | Time |
+|------------------------------|------|
+| Containers on the cloud      | 10m  |
 | Mount volumes on the cloud   | 10m  |
 | Localize select packages     | 10m  |
 | HPC-Singularity containers   | 5m   |
 | Launch and run parallel jobs | 10m  |
 | Questions                    | 10m+ |
+| Future work                  | 5m   |
 
 # Workshop goals and objectives
 
