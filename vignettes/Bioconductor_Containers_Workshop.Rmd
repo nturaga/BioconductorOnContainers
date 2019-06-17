@@ -1,10 +1,10 @@
 ---
 output:
   rmarkdown::html_document:
-	highlight: pygments
-	toc: true
-	toc_depth: 3
-	fig_width: 5
+    highlight: pygments
+    toc: true
+    toc_depth: 3
+    fig_width: 5
 vignette: >
   %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
   %\VignetteEngine{knitr::rmarkdown}
@@ -512,8 +512,8 @@ You can mount volumes on your VM to your container using GCSFUSE.
 ### Localize select packages
 
 For faster installation of packages from Bioconductor on cloud based
-instances, as provide as a demonstration ONLY google storage buckets with
-all the software packages which are pre-compiled (1600+).
+instances, as provide as a demonstration ONLY google storage buckets
+with all the software packages which are pre-compiled (1600+).
 
 Bioconductor provides the entire pre-compiled binary libraries for the
 following versions of R and Bioconductor. These are publicly
@@ -542,33 +542,30 @@ To copy packages over to the instance, using the command line:
 		-m \
 		cp -r gs://biocondcutor-full-devel/<package_name> <local_directory>
 
-<TODO> : Should there be a quickly designed R package to do this for
-the users? GoogleCloudBiocInstaller
-
 ### HPC-Singularity containers
 
 Singularity is a container engine just like Docker.
 
-To be able to use the containers on HPC cluster facilities, a reason to 
-use Singularity containers because Singularity is works on a BSD license (open source!!), 
-and works very well with Docker images which are already available. 
-To read more about it visit the [Singularity webpage](https://singularity.lbl.gov/about).
+To be able to use the containers on HPC cluster facilities, a reason
+to use Singularity containers because Singularity is works on a BSD
+license (open source!!), and works very well with Docker images which
+are already available.  To read more about it visit the 
+[Singularity webpage](https://singularity.lbl.gov/about).
 
 Bioconductor provides Singularity containers on the 
-[Singularity Hub](https://www.singularity-hub.org/collections/3154). 
-There are three containers provided right now  which reflect,
+[Singularity Hub](https://www.singularity-hub.org/collections/3154). There are
+three containers provided right now which reflect,
 
 1. devel (master)
 
-2. RELEASE_3_9
+1. RELEASE_3_9
 
-3. RELEASE_3_8
+1. RELEASE_3_8
 
-Singularity comes as a module which can be installed on a cluster facility. 
-Once the module is available, it is easy for the user to run software in a
-containerized fashion, without depending on the system admin for new software 
-installtions.
-
+Singularity comes as a module which can be installed on a cluster
+facility.  Once the module is available, it is easy for the user to
+run software in a containerized fashion, without depending on the
+system admin for new software installtions.
 
 ### Launch and run parallel jobs
 
