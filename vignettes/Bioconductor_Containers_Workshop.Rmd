@@ -15,8 +15,7 @@ vignette: >
 
 ## Instructor(s) name(s) and contact information
 
-Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github:
-[@nturaga](https://github.com/nturaga))
+Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga][])
 
 ## Schedule
 
@@ -36,14 +35,13 @@ https://bioc2019.bioconductor.org/schedule-developer-day
   Bioconductor way (using `BiocManager()`).
 
 * IMPORTANT: Docker needs to be installed on your local
-  machine. Please [install](https://docs.docker.com/install/) Docker
+  machine. Please [install Docker][]
   ahead of time. If you are planning to attend this workshop and are
   having issues installing Docker please email me ahead of time, I
   will help you through it. Please do not attend the workshop without
   installing Docker on your machine.
 
-  To [test installation of Docker](https://docs.docker.com/get-started/),
-  please run on your command line,
+  To [test installation of Docker][] and please run on your command line,
 
 		$ docker run hello-world
 
@@ -61,14 +59,14 @@ https://bioc2019.bioconductor.org/schedule-developer-day
   to run it before the workshop starts, otherwise there will be some
   lag. Run the command,
 
-        $ docker pull bioconductor/release_base2:latest
+	$ docker pull bioconductor/release_base2:latest
 
 * Some familiarity with HPC infrastructure (if this is relevant to
   participant).
 
 ## *R* / *Bioconductor* packages used
 
-* [BiocManager](https://cran.r-project.org/web/packages/BiocManager/index.html)
+* [BiocManager][]
 
 ## Beginners section - Topics
 
@@ -120,9 +118,7 @@ some combination of each container’s size and the virtual size
 values. If multiple containers started from the same exact image, the
 total size on disk for these containers would be SUM (size of
 containers) plus one container’s (virtual size- size). Be careful and
-monitor the size as it may grow very quickly.
-
-[Container size on disk](https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/#container-size-on-disk)
+monitor the size as it may grow very quickly. Read more about [Container size on disk].
 
 **Main reason behind using containers**: As a user, you want to
 delegate problems of software installation to the developer (in this
@@ -198,13 +194,13 @@ and how to build on these images.
 
 Bioconductor provides Docker images in a few ways:
 
-#### [Bioconductor `bioc_docker` images](https://bioconductor.org/help/docker/)
+#### [bioc_docker images][]
 
-These images are hosted on [Docker Hub](https://cloud.docker.com/u/bioconductor/repository/list). The
-[bioconductor docker page](https://bioconductor.org/help/docker/) has
-information and instructions on how to use them. The Dockerfile(s) for
+These [bioconductor images are hosted on Docker Hub][]. The
+[bioconductor docker page][] has
+information and instructions on how to use them. The [Dockerfile(s)][] for
 each of these containers is located in
-[github](https://github.com/Bioconductor/bioc_docker/tree/master/out). These
+Github. These
 are provided directly by the Bioconductor team for each supported
 version of Bioconductor and are categorized into,
 
@@ -244,31 +240,30 @@ worry about system requirements.
 
 We will talk about how to extend these images in the next section.
 
-#### [Bioconda](https://bioconda.github.io/)
+#### [Bioconda][]
 
 Bioconda provides
-[**BioContainers**](https://biocontainers.pro/registry/#/).  Bioconda
+[**BioContainers**][].  Bioconda
 provides a container for each individual package in Bioconductor under
- the BioContainer umbrella in [Quay.io](https://quay.io).
+ the BioContainer umbrella in [Quay.io][].
 
-- They also provide additional "Multi package" container, where you
+- They also provide additional [multi package containers][], where you
 can combine multiple bioconda packages into one container. You may
 choose a Bioconductor package combination of your desire, and build a
 container with
-them. (https://biocontainers.pro/registry/#/multipackage)
-https://biocontainers.pro/#/multipackage
+them.
 
 - But please note that they only contain the "release" version of the
 Bioconductor packages.
 
-#### [Bioconductor_full](https://github.com/Bioconductor/bioconductor_full)
+#### [bioconductor_full][]
 
 Bioconductor is now providing an image with a complete set of system
 dependencies. The goal of this image is, the user should be able
 install every Bioconductor package (1600 +), without having to deal
 with system dependency installation.
 
-This complete image can be obtained from [Docker hub](https://cloud.docker.com/u/bioconductor/repository/docker/bioconductor/bioconductor_full).
+These [bioconductor_full images can be obtained on [Docker hub][].
 
 ```
 docker pull bioconductor/bioconductor_full:devel
@@ -383,11 +378,9 @@ instantly. Another big advantage is, it prevents your docker image
 from growing in size due to package installation and data. This allows
 the users to distribute smaller docker images.
 
-
 ### Conclusion of Beginners section
 
 Re cap of items you have learnt in this section,
-
 
 ## Advanced section - Topics
 
@@ -413,8 +406,7 @@ scalability to run programs.
 
 In this section, there will be a demonstration showing the usability
 with the Google cloud Infrastructure, but take note that everything
-you can do on the Google Cloud you can do with AWS as well
-(https://cloud.google.com/docs/compare/aws/).
+you can do on the [Google Cloud you can do with AWS][].
 
 #### Requirements
 
@@ -425,7 +417,7 @@ you can do on the Google Cloud you can do with AWS as well
 	credits for a year. You have to link your credit card to this, so
 	make sure you don't leave any google cloud resources running. You
 	will go through your $300 USD in credit very quickly if you run
-	large compute instances. (https://cloud.google.com/free/)
+	large compute instances. Take a look at [Google cloud - free][].
 
 	NOTE: The user is responsible for keeping track of their billing
 	account and any credit cards they use for their workshop progress.
@@ -499,7 +491,8 @@ itself.
 		## Log in to the VM
 		gcloud compute ssh bioc-rstudio
 
-[Google Cloud documentation to configure containers](https://cloud.google.com/compute/docs/containers/configuring-options-to-run-containers)
+For more configuration options of your containers take a look at the
+[Google Cloud documentation to configure containers][].
 
 ### Mount volumes on the cloud
 
@@ -522,10 +515,9 @@ accessible buckets.
 | Bioc 3.8  | R 3.5.0 | gs://bioconductor-full-release-3-8| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-8|
 |----------------------|-----------|--------------------|------|
 
-NOTE: 'Requester Pays' (aka: You) for the access to these buckets
-(https://cloud.google.com/storage/docs/requester-pays). So by
-accessing the data on these packages to be downloaded on to your Cloud
-instance your billing project gets charged.
+NOTE: [Requester Pays][] (aka: You) for the access to these buckets So
+byaccessing the data on these packages to be downloaded on to your
+Cloud instance your billing project gets charged.
 
 To copy packages over to the instance, using the command line:
 
@@ -545,12 +537,11 @@ Singularity is a container engine just like Docker.
 To be able to use the containers on HPC cluster facilities, a reason
 to use Singularity containers because Singularity is works on a BSD
 license (open source!!), and works very well with Docker images which
-are already available.  To read more about it visit the
-[Singularity webpage](https://singularity.lbl.gov/about).
+are already available.  To read more about it visit the [Singularity
+webpage][].
 
-Bioconductor provides Singularity containers on the
-[Singularity Hub](https://www.singularity-hub.org/collections/3154). There are
-three containers provided right now which reflect,
+Bioconductor provides Singularity containers on the [Singularity
+Hub][]. There are three containers provided right now which reflect,
 
 1. devel (master)
 
@@ -574,9 +565,9 @@ analysis requirements on the cloud for a range of work.
 
 1. BiocParallel::RedisParam
 
-	It is based on the *redis* data-structure (https://redis.io/).
+	It is based on the *redis* data-structure ([Redis][]).
 
-	Github link: https://github.com/mtmorgan/RedisParam/tree/master
+	Link: [RedisParam][]
 
 	This package provides a redis-based back-end for BiocParallel,
     enabling an alternative, modern mechanism for distributed
@@ -599,21 +590,18 @@ analysis requirements on the cloud for a range of work.
     the user from mundane tasks such as worrying if a worker node has
     failed.
 
-	<TODO:> moved to Bioconductor
-	Link: https://github.com/Bioconductor/k8s-redis-bioc-example/tree/master/k8s
+    Link: [Bioconductor-k8sredis-k8s][]
 
 3. Helm charts
 
-	[helm.sh](www.helm.sh) is a package manager for Kubernetes. Once
+	[helm.sh][] is a package manager for Kubernetes. Once
     we created the Kubernetes deployment for RedisParam we wanted to
     make sure it's easily distributed and used in the community.
 
 	Helm basically works on templating the K8s deployment and making a
     distributable tarball (or package).
 
-	<Short Demo of Helm/K8S on google cloud>
-
-	Link: https://github.com/mtmorgan/k8s-redis-bioc-example/tree/master/helm-chart
+   Link: [Bioconductor-k8sredis-helm-chart][]
 
 ## References
 
@@ -652,3 +640,55 @@ pkgs
 ```{r}
 sessionInfo()
 ```
+
+[@nturaga]: https://github.com/nturaga
+
+[install Docker]: https://docs.docker.com/install/
+
+[test installation of Docker]: https://docs.docker.com/get-started/
+
+[BiocManager]: https://cran.r-project.org/web/packages/BiocManager/index.html
+
+[Container size on disk]: https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/#container-size-on-disk
+
+[bioc_docker images]: https://bioconductor.org/help/docker/
+
+[bioconductor images are hosted on Docker Hub]: https://cloud.docker.com/u/bioconductor/repository/list
+
+[bioconductor docker page]: https://bioconductor.org/help/docker/
+
+[Dockerfile(s)]: https://github.com/Bioconductor/bioc_docker/tree/master/out
+
+[Bioconda]: https://bioconda.github.io/
+
+[**BioContainers**]: https://biocontainers.pro/registry/#/
+
+[Quay.io]: https://quay.io
+
+[multi package containers]: https://biocontainers.pro/#/multipackage
+
+[bioconductor_full]: https://github.com/Bioconductor/bioconductor_full
+
+[Docker hub]: https://cloud.docker.com/u/bioconductor/repository/docker/bioconductor/bioconductor_full
+
+[Google cloud - free]: https://cloud.google.com/free/
+
+[Google Cloud you can do with AWS]: https://cloud.google.com/docs/compare/aws/
+
+[Google Cloud documentation to configure containers]: https://cloud.google.com/compute/docs/containers/configuring-options-to-run-containers
+
+[Singularity webpage]: https://singularity.lbl.gov/about
+
+[Singularity Hub]: https://www.singularity-hub.org/collections/3154
+
+[Bioconductor-k8sredis-k8s]: https://github.com/Bioconductor/k8sredis/tree/master/k8s
+
+[Bioconductor-k8sredis-helm-chart]: https://github.com/Bioconductor/k8sredis/tree/master/helm-chart
+
+[RedisParam]: https://github.com/mtmorgan/RedisParam/tree/master
+
+[Redis]: https://redis.io/
+
+[Requester Pays]: https://cloud.google.com/storage/docs/requester-pays
+
+[helm.sh]: www.helm.sh
