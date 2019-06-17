@@ -15,15 +15,14 @@ vignette: >
 
 ## Instructor(s) name(s) and contact information
 
-Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga](https://github.com/nturaga))
+Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github:
+[@nturaga](https://github.com/nturaga))
 
 ## Schedule
 
 https://bioc2019.bioconductor.org/schedule-developer-day
 
-ROOM: Smilow Seminar Room/MSB large/SB G19
-
-11:00 - 12:00 – Workshops I 
+11:00 - 12:00 – Workshops I
     Track 1: Bioconductor on Containers - Beginners
 
 12:00 - 1:00 - Lunch
@@ -41,13 +40,13 @@ ROOM: Smilow Seminar Room/MSB large/SB G19
   ahead of time. If you are planning to attend this workshop and are
   having issues installing Docker please email me ahead of time, I
   will help you through it. Please do not attend the workshop without
-  installing Docker on your machine. 
-  
+  installing Docker on your machine.
+
   To [test installation of Docker](https://docs.docker.com/get-started/),
-  please run on your command line, 
-  
+  please run on your command line,
+
 		$ docker run hello-world
-		
+
 		Unable to find image 'hello-world:latest' locally
 		latest: Pulling from library/hello-world
 		ca4f61b1923c: Pull complete
@@ -57,9 +56,9 @@ ROOM: Smilow Seminar Room/MSB large/SB G19
 		Hello from Docker!
 		This message shows that your installation appears to be working correctly.
 
-* IMPORTANT: After installing docker, be sure to pull an image which 
-  we will use in class. This is a pretty big 'download' so make sure 
-  to run it before the workshop starts, otherwise there will be some 
+* IMPORTANT: After installing docker, be sure to pull an image which
+  we will use in class. This is a pretty big 'download' so make sure
+  to run it before the workshop starts, otherwise there will be some
   lag. Run the command,
 
         $ docker pull bioconductor/release_base2:latest
@@ -72,7 +71,7 @@ ROOM: Smilow Seminar Room/MSB large/SB G19
 * [BiocManager](https://cran.r-project.org/web/packages/BiocManager/index.html)
 
 ## Beginners section - Topics
-	
+
 | Activity                     | Time |
 |------------------------------|------|
 | Why Containers & Why Docker  | 10m  |
@@ -116,12 +115,14 @@ knitr::include_graphics(
 	)
 ```
 
-It is important to note, every time you start a container from an image
-it will take up the same amount of space as the image before you build
-on it.  So, if you start a docker image of 1GB, the container takes up
-1GB. The space being used on your machine is now 2GB. If you start 5
-containers, they take up 1GB each for a container, so you are
-consuming 5GB space.
+The total disk space used by all of the running containers on disk is
+some combination of each container’s size and the virtual size
+values. If multiple containers started from the same exact image, the
+total size on disk for these containers would be SUM (size of
+containers) plus one container’s (virtual size- size). Be careful and
+monitor the size as it may grow very quickly.
+
+[Container size on disk](https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/#container-size-on-disk)
 
 **Main reason behind using containers**: As a user, you want to
 delegate problems of software installation to the developer (in this
@@ -498,16 +499,11 @@ itself.
 		## Log in to the VM
 		gcloud compute ssh bioc-rstudio
 
-
 [Google Cloud documentation to configure containers](https://cloud.google.com/compute/docs/containers/configuring-options-to-run-containers)
 
 ### Mount volumes on the cloud
 
 You can mount volumes on your VM to your container using GCSFUSE.
-
-
-
-
 
 ### Localize select packages
 
@@ -549,10 +545,10 @@ Singularity is a container engine just like Docker.
 To be able to use the containers on HPC cluster facilities, a reason
 to use Singularity containers because Singularity is works on a BSD
 license (open source!!), and works very well with Docker images which
-are already available.  To read more about it visit the 
+are already available.  To read more about it visit the
 [Singularity webpage](https://singularity.lbl.gov/about).
 
-Bioconductor provides Singularity containers on the 
+Bioconductor provides Singularity containers on the
 [Singularity Hub](https://www.singularity-hub.org/collections/3154). There are
 three containers provided right now which reflect,
 
@@ -581,11 +577,11 @@ analysis requirements on the cloud for a range of work.
 	It is based on the *redis* data-structure (https://redis.io/).
 
 	Github link: https://github.com/mtmorgan/RedisParam/tree/master
-	
+
 	This package provides a redis-based back-end for BiocParallel,
     enabling an alternative, modern mechanism for distributed
     computation.
-	
+
 	This is yet to be integrated into BiocParallel. The *RedisParam*
     backend allows computation to be distributed across instances or
     containers running on the cloud. To explain the way the RedisParam
@@ -597,15 +593,15 @@ analysis requirements on the cloud for a range of work.
 	As the next iteration of our efforts on the cloud, we needed
     RedisParam to be working on a container orchestration technology
     like Kubernetes.
-	
+
 	We use Kubernetes to deploy the "cluster" on the cloud,
     scalability and to automate management of the deployment to free
     the user from mundane tasks such as worrying if a worker node has
     failed.
-	
+
 	<TODO:> moved to Bioconductor
 	Link: https://github.com/Bioconductor/k8s-redis-bioc-example/tree/master/k8s
-	
+
 3. Helm charts
 
 	[helm.sh](www.helm.sh) is a package manager for Kubernetes. Once
