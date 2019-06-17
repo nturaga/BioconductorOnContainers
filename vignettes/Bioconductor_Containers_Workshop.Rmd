@@ -59,10 +59,10 @@ https://bioc2019.bioconductor.org/schedule-developer-day
   to run it before the workshop starts, otherwise there will be some
   lag. Run the command,
 
-	$ docker pull bioconductor/release_base2:latest
+	    $ docker pull bioconductor/release_base2:latest
 
 * Some familiarity with HPC infrastructure (if this is relevant to
-  participant).
+  participant as there is only one topic which covers Singularity on HPC infrastructure).
 
 ## *R* / *Bioconductor* packages used
 
@@ -449,10 +449,10 @@ itself.
    aware of in this case since we'll be using RStudio as the interface
    for R.
 
-   These containers running on the a cloud *instance* (read: a
-   computer accessible remotely) need to accessible via the HTTP
-   protocol at a specific port (*8787* for RStudio). For this we need
-   to create a firewall rule which allows HTTP access at that port 8787.
+   These containers running on a cloud *instance* (read: a
+   computer accessible remotely) need to be accessible via the HTTP
+   protocol at a specific port (*8787* for RStudio). To allow this we need
+   to create a 'firewall rule' which allows HTTP access at the port 8787.
 
 		## Launch bioconductor/release_base2:latest image
 		gcloud compute instances create-with-container bioc-rstudio \
@@ -464,12 +464,11 @@ itself.
    These containers running on the a cloud *instance* (read: a
    computer accessible remotely) need to accessible via the HTTP
    protocol at a specific port (*8787* for RStudio). For this we need
-   to create a firewall rule which allows HTTP access at that port
-   8787.
-
-		## Create a firewall
+   to create a firewall rule which allows HTTP access at that port 8787.
+        
+        ## Create a firewall
 		gcloud compute firewall-rules create allow-http \
-			--allow tcp:8787
+			--allow tcp:8787 \
 			--target-tags http-server
 
    You can now list the running instances you have to check if your
@@ -479,13 +478,13 @@ itself.
 		gcloud compute instances list
 
    Once you are done using the instance, you might want to stop
-   it. This avoids running up the bill on your google cloud
+   it. This avoids running up the bill on your Google cloud
    project. When you are ready to restart it is easy enough to restart.
 
 		## Stop an instance, NOTE: terminating the instance is your problem!
 		gcloud compute instances stop bioc-rstudio
 
-   You can also log into your VM on the google cloud and provision any
+   You can also log into your VM on the Google cloud and provision any
    data you need.
 
 		## Log in to the VM
@@ -501,7 +500,7 @@ You can mount volumes on your VM to your container using GCSFUSE.
 ### Localize select packages
 
 For faster installation of packages from Bioconductor on cloud based
-instances, as provide as a demonstration ONLY google storage buckets
+instances, as provide as a demonstration ONLY Google storage buckets
 with all the software packages which are pre-compiled (1600+).
 
 Bioconductor provides the entire pre-compiled binary libraries for the
@@ -513,11 +512,11 @@ accessible buckets.
 | Bioc 3.10 | R devel | gs://bioconductor-full-devel      | https://console.cloud.google.com/storage/browser/bioconductor-full-devel      |
 | Bioc 3.9  | R 3.6.0 | gs://bioconductor-full-release-3-9| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-9|
 | Bioc 3.8  | R 3.5.0 | gs://bioconductor-full-release-3-8| https://console.cloud.google.com/storage/browser/bioconductor-full-release-3-8|
-|----------------------|-----------|--------------------|------|
 
-NOTE: [Requester Pays][] (aka: You) for the access to these buckets So
-byaccessing the data on these packages to be downloaded on to your
-Cloud instance your billing project gets charged.
+
+NOTE: [Requester Pays][] (aka: You) for the access to these buckets. So
+by accessing the data on these packages to be downloaded on to your
+google cloud instance your billing project gets charged.
 
 To copy packages over to the instance, using the command line:
 
@@ -528,7 +527,26 @@ To copy packages over to the instance, using the command line:
 	gsutil \
 		-u <name-of-billing-project> \
 		-m \
-		cp -r gs://biocondcutor-full-devel/<package_name> <local_directory>
+		cp -r gs://bioconductor-full-devel/<package_name> <local_directory>
+
+We also provide a very helpful package (which is part of another project)
+
+    ## Launch a bioconductor_full:RELEASE_3_9 image
+	gcloud compute instances create-with-container bioc-release \
+			--container-image bioconductor/bioconductor_full:RELEASE_3_9 \
+			--container-restart-policy never \
+			--container-env PASSWORD=bioc \
+			--tags http-server
+
+    ## Login in to your Rstudio session
+    ## username: Rstudio, password:bioc
+
+    ## Install the AnVIL package
+    BiocManager::install('Bioconductor/AnVIL_rapiclient')
+    BiocManager::install('Bioconductor/AnVIL')
+
+    ## Use AnVIL install to install packages on your bioconductor-full image
+    AnVIL::install('GenomicsRanges')
 
 ### HPC-Singularity containers
 
@@ -552,7 +570,7 @@ Hub][]. There are three containers provided right now which reflect,
 Singularity comes as a module which can be installed on a cluster
 facility.  Once the module is available, it is easy for the user to
 run software in a containerized fashion, without depending on the
-system admin for new software installtions.
+system admin for new software installations.
 
 ### Launch and run parallel jobs
 
@@ -574,7 +592,7 @@ analysis requirements on the cloud for a range of work.
     computation.
 
 	This is yet to be integrated into BiocParallel. The *RedisParam*
-    backend allows computation to be distributed across instances or
+    back end allows computation to be distributed across instances or
     containers running on the cloud. To explain the way the RedisParam
     functions, think of 5 worker instances waiting to to hear from a
     single manager instance which sends a job or multiple jobs.
@@ -599,7 +617,7 @@ analysis requirements on the cloud for a range of work.
     make sure it's easily distributed and used in the community.
 
 	Helm basically works on templating the K8s deployment and making a
-    distributable tarball (or package).
+    easy to distribute tarball (or package).
 
    Link: [Bioconductor-k8sredis-helm-chart][]
 
