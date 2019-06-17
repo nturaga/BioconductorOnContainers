@@ -219,7 +219,6 @@ version of Bioconductor and are categorized into,
 	|GenomicRanges | GenomicAlignment |GenomicFeatures |SummarizedExperiment |VariantAnnotation |
 	|DelayedArray | GSEABase | Gviz |graph | RBGL|
 	|Rgraphviz|rmarkdown | httr | knitr| BiocStyle|
-	|--|--|--|--|--|
 
 1. protmetcore2: It contains everything in core2, plus a selection of
    core Bioconductor packages recommended for proteomic and
@@ -550,31 +549,116 @@ We also provide a very helpful package (which is part of another project)
 
 ### HPC-Singularity containers
 
-Singularity is a container engine just like Docker.
-
-To be able to use the containers on HPC cluster facilities, a reason
-to use Singularity containers because Singularity is works on a BSD
-license (open source!!), and works very well with Docker images which
-are already available.  To read more about it visit the [Singularity
+Singularity is a container engine just like Docker. Read more about on the [Singularity
 webpage][].
 
-Bioconductor provides Singularity containers on the [Singularity
-Hub][]. There are three containers provided right now which reflect,
+Advantages of using Singularity are: 
 
-1. devel (master)
+- Singularity is compatible on HPC infrastructures and is easily installable.
 
-1. RELEASE_3_9
+- It has a BSD license (open source!!)
 
-1. RELEASE_3_8
+- Works very well with Docker images which are already available.  
 
 Singularity comes as a module which can be installed on a cluster
 facility.  Once the module is available, it is easy for the user to
 run software in a containerized fashion, without depending on the
 system admin for new software installations.
 
+```
+module load singularity
+```
+
+Bioconductor provides Singularity containers on the [Singularity
+Hub][]. There are three containers provided right now which reflect,
+
+1. devel (master)
+
+```
+## Pull image
+singularity pull --name bioc-devel.simg shub://Bioconductor/bioconductor_full
+
+## Use image's R
+singularity shell bioc-devel.simg /usr/local/bin/R
+```
+
+1. RELEASE_3_9
+
+```
+singularity pull --name bioc-release-3-9.simg shub://Bioconductor/bioconductor_full:release_3_9
+```
+
+1. RELEASE_3_8
+
+```
+singularity pull --name bioc-release-3-8.simg shub://Bioconductor/bioconductor_full:release_3_8
+```
+
+You can set an alias to your Singularity image on your `.bashrc` file as,
+
+```
+alias singulaR="singularity shell \
+                -B /mnt/lustre/users/nturaga/my-lib:/usr/local/lib/R/host-site-library \
+                /mnt/lustre/users/nturaga/bioc-devel.simg \
+                /usr/local/bin/R"
+```
+
+where,
+
+`-B` is how you mount a volume on the singularity image `<local path>:<container path>`. 
+This command shows my R library being mounted from my head node on the singularity container.
+
+`/mnt/lustre/users/nturaga/bioc-devel.simg` refers to the location of my singularity image.
+
+`/usr/local/bin/R` is the location of R on the container.
+
 ### Launch and run parallel jobs
 
-Use BiocParallel to launch and run jobs on Singularity containers
+Use BiocParallel to launch and run jobs on Singularity containers. The following example has been run on `SLURM`. Thanks to Levi Waldron and Ludwig Geistlinger.
+
+To use the containerized singularity image in conjunction with BiocParallel, a recent R(3.6.0) installation on the cluster is needed that, as a minimum requirement, has also the packages `BiocParallel` and `batchtools` installed.
+
+NOTE: Submission of jobs directly from within the singularity container on the head node is not possible. The container doesn’t recognize the cluster environment and its specific configuration. It might also cause issues to mount volumes.
+
+For a SLURM cluster, `slurm-singularity.tmpl` is the template file with contents,
+
+```
+#!/bin/bash
+
+<%
+# relative paths are not handled well by Slurm
+log.file = fs::path_expand(log.file)
+-%>
+
+#SBATCH -p <queue>
+#SBATCH --job-name=<%= job.name %>
+#SBATCH --output=<%= log.file %>
+#SBATCH --error=<%= log.file %>
+
+module load singularity
+
+singularity shell <path-to-image>/<bioconductor-image-w-BiocParallel>-latest.simg R -e 'batchtools::doJobCollection("<%= uri %>")'
+```
+
+Using `BiocParallel` and `batchtools`, it is then possible to run the following on
+your head node in R
+
+```
+library(BiocParallel)
+param <- BatchtoolsParam(
+    workers = 5, 
+    cluster = "slurm",
+	template="slurm-singularity.tmpl"
+)
+
+## and supply the param to bplapply for parallel execution
+## of a simple function that returns the hostname of the
+## compute nodes for testing purpose.
+test_cluster <- function(n) system2('hostname')
+res <- bplapply(1:20, test_cluster, BPPARAM = param)
+
+res
+```
 
 ### Future work
 
