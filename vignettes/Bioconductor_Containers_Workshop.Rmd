@@ -492,9 +492,23 @@ itself.
 For more configuration options of your containers take a look at the
 [Google Cloud documentation to configure containers][].
 
-### Mount volumes on the cloud
+### Mount volumes on the cloud (Optional)
 
-You can mount volumes on your VM to your container using GCSFUSE.
+You can mount storage buckets on your VM to your container using GCSFUSE. 
+For this you need to choose an image with access to the google cloud and gcsfuse. 
+To install gcsfuse, and
+
+Create a directory, where you want the google bucket
+
+    mkdir /path/to/mount
+
+Mount a bucket on your google cloud
+
+    gcsfuse example-bucket /path/to/mount
+    
+Start working with the mounted bucket 
+
+    ls /path/to/mount
 
 ### Localize select packages
 
@@ -612,11 +626,23 @@ This command shows my R library being mounted from my head node on the singulari
 
 `/usr/local/bin/R` is the location of R on the container.
 
+From here on out, the user can build packages or use packages on their local cluster using,
+
+```
+singulaR CMD build <package name>
+```
+
+or run scripts using
+
+```
+singulaR -f <my_R_script.R>
+```
+
 ### Launch and run parallel jobs
 
 Use BiocParallel to launch and run jobs on Singularity containers. The following example has been run on `SLURM`. Thanks to Levi Waldron and Ludwig Geistlinger.
 
-To use the containerized singularity image in conjunction with BiocParallel, a recent R(3.6.0) installation on the cluster is needed that, as a minimum requirement, has also the packages `BiocParallel` and `batchtools` installed.
+To use the containerized singularity image in conjunction with BiocParallel, a recent R(3.6.0) installation on the cluster is needed that, as a minimum requirement, has also the packages `BiocParallel` and `batchtools` installed (minimum requirement would be similar to the image [biocparallel-example][])
 
 NOTE: Submission of jobs directly from within the singularity container on the head node is not possible. The container doesn’t recognize the cluster environment and its specific configuration. It might also cause issues to mount volumes.
 
@@ -655,6 +681,8 @@ param <- BatchtoolsParam(
 ## of a simple function that returns the hostname of the
 ## compute nodes for testing purpose.
 test_cluster <- function(n) system2('hostname')
+
+## Run bplapply
 res <- bplapply(1:20, test_cluster, BPPARAM = param)
 
 res
@@ -794,3 +822,5 @@ sessionInfo()
 [Requester Pays]: https://cloud.google.com/storage/docs/requester-pays
 
 [helm.sh]: www.helm.sh
+
+[biocparallel-example]: https://github.com/nturaga/biocparallel-example
