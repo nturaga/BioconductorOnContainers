@@ -13,6 +13,64 @@ vignette: >
 
 # Bioconductor on Containers
 
+## Instructor(s) name(s) and contact information
+
+Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga](https://github.com/nturaga))
+
+## Schedule
+
+https://bioc2019.bioconductor.org/schedule-developer-day
+
+ROOM: Smilow Seminar Room/MSB large/SB G19
+
+11:00 - 12:00 – Workshops I 
+    Track 1: Bioconductor on Containers - Beginners
+
+12:00 - 1:00 - Lunch
+
+1:00 - 2:00 - Workshop II
+    Track 1: Bioconductor on Containers - Advanced
+
+## Pre-requisites
+
+* Basic knowledge of R syntax / how to install packages the
+  Bioconductor way (using `BiocManager()`).
+
+* IMPORTANT: Docker needs to be installed on your local
+  machine. Please [install](https://docs.docker.com/install/) Docker
+  ahead of time. If you are planning to attend this workshop and are
+  having issues installing Docker please email me ahead of time, I
+  will help you through it. Please do not attend the workshop without
+  installing Docker on your machine. 
+  
+  To [test installation of Docker](https://docs.docker.com/get-started/),
+  please run on your command line, 
+  
+		$ docker run hello-world
+		
+		Unable to find image 'hello-world:latest' locally
+		latest: Pulling from library/hello-world
+		ca4f61b1923c: Pull complete
+		Digest: sha256:ca0eeb6fb05351dfc8759c20733c91def84cb8007aa89a5bf606bc8b315b9fc7
+		Status: Downloaded newer image for hello-world:latest
+
+		Hello from Docker!
+		This message shows that your installation appears to be working correctly.
+
+* IMPORTANT: After installing docker, be sure to pull an image which 
+  we will use in class. This is a pretty big 'download' so make sure 
+  to run it before the workshop starts, otherwise there will be some 
+  lag. Run the command,
+
+        $ docker pull bioconductor/release_base2:latest
+
+* Some familiarity with HPC infrastructure (if this is relevant to
+  participant).
+
+## *R* / *Bioconductor* packages used
+
+* [BiocManager](https://cran.r-project.org/web/packages/BiocManager/index.html)
+
 ## Beginners section - Topics
 	
 | Activity                     | Time |
@@ -445,7 +503,11 @@ itself.
 
 ### Mount volumes on the cloud
 
-You can mount volumes on your VM to your container.
+You can mount volumes on your VM to your container using GCSFUSE.
+
+
+
+
 
 ### Localize select packages
 
@@ -485,11 +547,28 @@ the users? GoogleCloudBiocInstaller
 
 ### HPC-Singularity containers
 
-A few Singularity hub containers you can use on your
+Singularity is a container engine just like Docker.
 
-<TODO: HPC singularity brief description>
+To be able to use the containers on HPC cluster facilities, a reason to 
+use Singularity containers because Singularity is works on a BSD license (open source!!), 
+and works very well with Docker images which are already available. 
+To read more about it visit the [Singularity webpage](https://singularity.lbl.gov/about).
 
-https://github.com/nturaga/biocparallel_singularity
+Bioconductor provides Singularity containers on the 
+[Singularity Hub](https://www.singularity-hub.org/collections/3154). 
+There are three containers provided right now  which reflect,
+
+1. devel (master)
+
+2. RELEASE_3_9
+
+3. RELEASE_3_8
+
+Singularity comes as a module which can be installed on a cluster facility. 
+Once the module is available, it is easy for the user to run software in a
+containerized fashion, without depending on the system admin for new software 
+installtions.
+
 
 ### Launch and run parallel jobs
 
