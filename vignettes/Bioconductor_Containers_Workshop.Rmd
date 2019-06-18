@@ -6,7 +6,7 @@ output:
     toc_depth: 3
     fig_width: 5
 vignette: >
-  %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
+  %\VignetteIndexEntry{BioconductorOnContainers}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding[utf8]{inputenc}
 ---
@@ -104,13 +104,12 @@ today. An **Image** is a static (fixed) template and container is a
 running version of the image. An image can be used to create a
 container.
 
-```{r image_one, echo=FALSE, out.width='75%', eval=FALSE}
+```{r image_one, echo=FALSE}
 knitr::include_graphics(
-	system.file("inst/vignettes",
-				"Docker_images_vs_containers.png",
-				package = "Bioconductor_Containers_Workshop"
-				)
-	)
+	system.file(package='BioconductorOnContainers', 
+		'vignettes', 
+		'Docker_Image_vs_Container.png')
+)
 ```
 
 **Main reason behind using containers**: As a user, you want to
@@ -267,7 +266,7 @@ But please note, that the actual Bioconductor packages themselves
 don't come on this image. It is up to the user to install the
 Bioconductor packages through `BiocManager::install`.
 
-These [bioconductor_full images can be obtained on [Docker hub][].
+These bioconductor_full images can be obtained on [Docker hub][].
 
 ```
 docker pull bioconductor/bioconductor_full:devel
