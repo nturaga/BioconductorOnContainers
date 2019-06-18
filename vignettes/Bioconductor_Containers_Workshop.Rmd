@@ -1,10 +1,10 @@
 ---
 output:
   rmarkdown::html_document:
-    highlight: pygments
-    toc: true
-    toc_depth: 3
-    fig_width: 5
+	highlight: pygments
+	toc: true
+	toc_depth: 3
+	fig_width: 5
 vignette: >
   %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
   %\VignetteEngine{knitr::rmarkdown}
@@ -22,12 +22,12 @@ Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga][])
 https://bioc2019.bioconductor.org/schedule-developer-day
 
 11:00 - 12:00 – Workshops I
-    Track 1: Bioconductor on Containers - Beginners
+	Track 1: Bioconductor on Containers - Beginners
 
 12:00 - 1:00 - Lunch
 
 1:00 - 2:00 - Workshop II
-    Track 1: Bioconductor on Containers - Advanced
+	Track 1: Bioconductor on Containers - Advanced
 
 ## Pre-requisites
 
@@ -59,7 +59,7 @@ https://bioc2019.bioconductor.org/schedule-developer-day
   to run it before the workshop starts, otherwise there will be some
   lag. Run the command,
 
-	    $ docker pull bioconductor/release_base2:latest
+		$ docker pull bioconductor/release_base2:latest
 
 * Some familiarity with HPC infrastructure (if this is relevant to
   participant as there is only one topic which covers Singularity on HPC infrastructure).
@@ -124,8 +124,8 @@ some combination of each container’s size and the virtual size
 values. If multiple containers started from the same exact image, the
 total size on disk for these containers would be SUM (size of
 containers) plus one container’s (virtual size). Be careful and
-monitor the size of your containers as it may grow very quickly. 
-Read more about [Container size on disk][].
+monitor the size of your containers as it may grow very quickly.  Read
+more about [Container size on disk][].
 
 ### Docker warmup
 
@@ -150,7 +150,8 @@ docker run -p 8787:8787 -e PASSWORD=bioc bioconductor/release_base2:latest
 
 where, `-p` if the port, and `-e` is the environment variable
 
-Open a new terminal and you can check to see your container is running,
+Open a new terminal and you can check to see your container is
+running,
 
 ```
 docker ps
@@ -201,10 +202,11 @@ Bioconductor provides Docker images in a few ways:
 #### [bioc_docker images][]
 
 These [bioconductor images are hosted on Docker Hub][]. The
-[bioconductor docker page][] has information and instructions on how to 
-use them. The [Dockerfile(s)][] for each of these containers is located in 
-Github. These are provided directly by the Bioconductor team for each 
-supported version of Bioconductor and are categorized into,
+[bioconductor docker page][] has information and instructions on how
+to use them. The [Dockerfile(s)][] for each of these containers is
+located in Github. These are provided directly by the Bioconductor
+team for each supported version of Bioconductor and are categorized
+into,
 
 1. base2: Contains R, RStudio, and a single Bioconductor package
    (`BiocManager`, providing the `install()` function for installing
@@ -241,28 +243,29 @@ worry about system requirements.
 
 #### [Bioconda][]
 
-Bioconda provides [**BioContainers**][].  Bioconda
-provides a container for each individual package in Bioconductor under 
-the "BioContainer" umbrella in [Quay.io][].
+Bioconda provides [**BioContainers**][].  Bioconda provides a
+container for each individual package in Bioconductor under the
+"BioContainer" umbrella in [Quay.io][].
 
 - They also provide additional [multi package containers][], where you
 can combine multiple bioconda packages into one container. You may
 choose a Bioconductor package combination of your desire, and build a
-container with them. This is a helpful tool. 
+container with them. This is a helpful tool.
 
 - But please note that they only contain the "release" version of the
-Bioconductor packages. Bioconda does not build or distribute 'devel' version
-of Bioconductor.
+Bioconductor packages. Bioconda does not build or distribute 'devel'
+version of Bioconductor.
 
 #### [bioconductor_full][]
 
 Bioconductor is now providing an image with the complete set of system
 dependencies. The goal of this image is, the user should be able
 install every Bioconductor package (1620 +), without having to deal
-with system dependency installation. 
+with system dependency installation.
 
-But please note, that the actual Bioconductor packages themselves don't come on this image. It is up to
-the user to install the Bioconductor packages through `BiocManager::install`.
+But please note, that the actual Bioconductor packages themselves
+don't come on this image. It is up to the user to install the
+Bioconductor packages through `BiocManager::install`.
 
 These [bioconductor_full images can be obtained on [Docker hub][].
 
@@ -275,10 +278,11 @@ docker pull bioconductor/bioconductor_full:RELEASE_3_8
 ```
 
 There are a few exceptions in this list, which are unavoidable because
-of the way these images are built and provisioned as docker images. The list 
-is given in the `docs/issues.md` files on the Github page for these images. 
-(We try to keep that document as updated as possible, but if you find a package 
-installs and is listed there, send us a Pull Request.)
+of the way these images are built and provisioned as docker
+images. The list is given in the `docs/issues.md` files on the Github
+page for these images.  (We try to keep that document as updated as
+possible, but if you find a package installs and is listed there, send
+us a Pull Request.)
 
 ### Flavors of Bioconductor
 
@@ -286,8 +290,9 @@ The flavors you "need" for your work should be based on the packages
 you want for your analysis. There are a list of packages for each
 flavor you should evaluate before using the container.
 
-For most beginners a good place to start is the `bioconductor/release_core2` docker
-container which includes all the "core" bioconductor packages.
+For most beginners a good place to start is the
+`bioconductor/release_core2` docker container which includes all the
+"core" bioconductor packages.
 
 #### How to extend a docker image
 
@@ -356,10 +361,11 @@ packages in your container,
 
 	-v /shared-Bio-3.9:/usr/local/lib/R/host-site-library
 
-This location `/usr/local/lib/R/host-site-library` has special meaning, and the configuration within the
-bioconductor container allows the user to share built packages. The
-path on the docker image that should be mapped to a local R library
-directory is /usr/local/lib/R/host-site-library.
+This location `/usr/local/lib/R/host-site-library` has special
+meaning, and the configuration within the bioconductor container
+allows the user to share built packages. The path on the docker image
+that should be mapped to a local R library directory is
+/usr/local/lib/R/host-site-library.
 
 1. Create a directory, on your host machine, (as given as whichever
    path suits you the best)
@@ -370,7 +376,7 @@ directory is /usr/local/lib/R/host-site-library.
 
 		docker run \
 			-v /shared-BioC-3.9:/usr/local/lib/R/host-site-library \
-			-v /data:/home/rstudio/data \ 
+			-v /data:/home/rstudio/data \
 			-it bioconductor/release_base2 \
 			R
 
@@ -379,10 +385,10 @@ directory is /usr/local/lib/R/host-site-library.
 		BiocManager::install('BiocGenerics')
 
 All the packages in that directory will be directly available to use
-instantly the next time R is started from the container. 
-Another big advantage is, it prevents your docker image
-from growing in size due to package installation and data. This allows
-the users to distribute smaller docker images containing only what is needed.
+instantly the next time R is started from the container.  Another big
+advantage is, it prevents your docker image from growing in size due
+to package installation and data. This allows the users to distribute
+smaller docker images containing only what is needed.
 
 ### Conclusion of Beginners section
 
@@ -395,6 +401,8 @@ Re cap of items you have learnt in this section,
 1. What flavors of Bioconductor images are present.
 
 1. How to bind/mount volumes on these Bioconductor docker images.
+
+These skills get you started on using Bioconductor on containers.
 
 ## Advanced section - Topics
 
@@ -410,19 +418,21 @@ Re cap of items you have learnt in this section,
 
 ### Who is this section for?
 
-The advanced section is for anyone who has some familiarity with how Docker works, 
-and wants to run things on the "Cloud". This will be a demonstration section, 
-since we are not providing "credits" to use a certain cloud (Google or AWS).
+The advanced section is for anyone who has some familiarity with how
+Docker works, and wants to run things on the "Cloud". This will be a
+demonstration section, since we are not providing "credits" to use a
+certain cloud (Google or AWS).
 
-This section aims to give some direction to users who are looking to use Bioconductor
-on the cloud. We also discuss some future work, which look very promising.
+This section aims to give some direction to users who are looking to
+use Bioconductor on the cloud. We also discuss some future
+developments, which look promising.
 
 ### Containers on the cloud
 
 Running your R session on the cloud with RStudio makes you 'machine
 independent'. It also allows you to access data hosted on the cloud
-cheaper and faster for example 1000 Genomes data which is available 
-on the google cloud: gs://genomics-public-data/1000-genomes.
+cheaper and faster for example 1000 Genomes data which is available on
+the google cloud: gs://genomics-public-data/1000-genomes.
 
 One of the biggest advantages to cloud machines is the on-demand
 scalability to run programs.
@@ -447,8 +457,8 @@ you can do on the [Google Cloud you can do with AWS][].
 
 1. You should also have taken the beginners course or at the very
    least have a basic understanding of Docker. If you have missed the
-   earlier section please refer back to it for any gaps in the
-   information in this section.
+   earlier section please refer back to it for any gaps of
+   information.
 
 1. `Google Cloud SDK` needs to be installed, and command line callable
    using `gcloud auth login`.
@@ -483,13 +493,18 @@ itself.
 			--container-restart-policy never \
 			--container-env PASSWORD=bioc \
 			--tags http-server
+			--machine-type n1-standard-4
+			
+	Note: [Reference to gcloud compute][]. Also keep in mind that, you
+    can launch any image derived from `bioc_docker` images in this
+    way, i.e. `bioconductor/bioconductor_full:<tag>`
 
    These containers running on the a cloud *instance* (read: a
    computer accessible remotely) need to accessible via the HTTP
    protocol at a specific port (*8787* for RStudio). For this we need
    to create a firewall rule which allows HTTP access at that port 8787.
-        
-        ## Create a firewall
+
+		## Create a firewall
 		gcloud compute firewall-rules create allow-http \
 			--allow tcp:8787 \
 			--target-tags http-server
@@ -502,10 +517,15 @@ itself.
 
    Once you are done using the instance, you might want to stop
    it. This avoids running up the bill on your Google cloud
-   project. When you are ready to restart it is easy enough to restart.
+   project. When you are ready to restart it is easy enough to
+   restart.
 
-		## Stop an instance, NOTE: terminating the instance is your problem!
+		## Stop an instance,
 		gcloud compute instances stop bioc-rstudio
+
+	NOTE: Terminating/deleting the instance is your problem! Go to
+    your google cloud, and make sure to terminate the instance or
+    `gcloud compute instances delete <bioc-rstudio>`.
 
    You can also log into your VM on the Google cloud and provision any
    data you need.
@@ -518,21 +538,25 @@ For more configuration options of your containers take a look at the
 
 ### Mount volumes on the cloud (Optional)
 
-You can mount storage buckets on your VM to your container using GCSFUSE. 
-For this you need to choose an image with access to the google cloud and gcsfuse. 
-To install gcsfuse, and
+There are many publicly available gemonics data sets hosted by cloud
+services, [Google cloud genomics datasets][] are located on the
+bucket, [gs://genomics-public-data][].
+
+You can mount storage buckets on your VM to your container using
+GCSFUSE.  For this you need to choose an image with access to the
+google cloud and gcsfuse. To install gcsfuse, and
 
 Create a directory, where you want the google bucket
 
-    mkdir /path/to/mount
+	mkdir /path/to/mount
 
 Mount a bucket on your google cloud
 
-    gcsfuse example-bucket /path/to/mount
-    
-Start working with the mounted bucket 
+	gcsfuse example-bucket /path/to/mount
 
-    ls /path/to/mount
+Start working with the mounted bucket
+
+	ls /path/to/mount
 
 ### Localize select packages
 
@@ -566,37 +590,42 @@ To copy packages over to the instance, using the command line:
 		-m \
 		cp -r gs://bioconductor-full-devel/<package_name> <local_directory>
 
-We also provide a very helpful package (which is part of another project)
+We also provide a very helpful package (which is part of another
+project) called `AnVIL`. With the help of the `AnVIL::install()`
+function, users are able to localize packages from buckets and install
+them on containers at high speed without having to wait for
+compilation.
 
-    ## Launch a bioconductor_full:RELEASE_3_9 image
+	## Launch a bioconductor_full:RELEASE_3_9 image
 	gcloud compute instances create-with-container bioc-release \
 			--container-image bioconductor/bioconductor_full:RELEASE_3_9 \
 			--container-restart-policy never \
 			--container-env PASSWORD=bioc \
 			--tags http-server
 
-    ## Login in to your Rstudio session
-    ## username: Rstudio, password:bioc
+	## Login in to your Rstudio session
+	## username: Rstudio, password:bioc
 
-    ## Install the AnVIL package
-    BiocManager::install('Bioconductor/AnVIL_rapiclient')
-    BiocManager::install('Bioconductor/AnVIL')
+	## Install the AnVIL package
+	BiocManager::install('Bioconductor/AnVIL_rapiclient')
+	BiocManager::install('Bioconductor/AnVIL')
 
-    ## Use AnVIL install to install packages on your bioconductor-full image
-    AnVIL::install('GenomicsRanges')
+	## Use AnVIL install to install packages on your bioconductor-full image
+	AnVIL::install('GenomicsRanges')
 
 ### HPC-Singularity containers
 
-Singularity is a container engine just like Docker. Read more about on the [Singularity
-webpage][].
+Singularity is a container engine just like Docker. Read more about on
+the [Singularity webpage][].
 
-Advantages of using Singularity are: 
+Advantages of using Singularity are:
 
-- Singularity is compatible on HPC infrastructures and is easily installable.
+- Singularity is compatible on HPC infrastructures and is easily
+  installable.
 
 - It has a BSD license (open source!!)
 
-- Works very well with Docker images which are already available.  
+- Works very well with Docker images which are already available.
 
 Singularity comes as a module which can be installed on a cluster
 facility.  Once the module is available, it is easy for the user to
@@ -608,7 +637,8 @@ module load singularity
 ```
 
 Bioconductor provides Singularity containers on the [Singularity
-Hub][]. There are three containers provided right now which reflect,
+Hub][]. There are three containers provided right now which represent
+versions of Bioconductor,
 
 1. devel (master)
 
@@ -632,25 +662,29 @@ singularity pull --name bioc-release-3-9.simg shub://Bioconductor/bioconductor_f
 singularity pull --name bioc-release-3-8.simg shub://Bioconductor/bioconductor_full:release_3_8
 ```
 
-You can set an alias to your Singularity image on your `.bashrc` file as,
+You can set an alias to your Singularity image on your `.bashrc` file
+as,
 
 ```
 alias singulaR="singularity shell \
-                -B /mnt/lustre/users/nturaga/my-lib:/usr/local/lib/R/host-site-library \
-                /mnt/lustre/users/nturaga/bioc-devel.simg \
-                /usr/local/bin/R"
+				-B /mnt/lustre/users/nturaga/my-lib:/usr/local/lib/R/host-site-library \
+				/mnt/lustre/users/nturaga/bioc-devel.simg \
+				/usr/local/bin/R"
 ```
 
 where,
 
-`-B` is how you mount a volume on the singularity image `<local path>:<container path>`. 
-This command shows my R library being mounted from my head node on the singularity container.
+`-B` is how you mount a volume on the singularity image `<local
+path>:<container path>`.  This command shows my R library being
+mounted from my head node on the singularity container.
 
-`/mnt/lustre/users/nturaga/bioc-devel.simg` refers to the location of my singularity image.
+`/mnt/lustre/users/nturaga/bioc-devel.simg` refers to the location of
+my singularity image.
 
 `/usr/local/bin/R` is the location of R on the container.
 
-From here on out, the user can build packages or use packages on their local cluster using,
+From here on out, the user can build packages or use packages on their
+local cluster using,
 
 ```
 singulaR CMD build <package name>
@@ -664,13 +698,26 @@ singulaR -f <my_R_script.R>
 
 ### Launch and run parallel jobs
 
-Use BiocParallel to launch and run jobs on Singularity containers. The following example has been run on `SLURM`. Thanks to Levi Waldron and Ludwig Geistlinger.
+Use BiocParallel to launch and run jobs on Singularity containers. The
+following example has been run on `SLURM` (This example has been
+provided thanks to Martin Morgan, Levi Waldron and Ludwig
+Geistlinger).
 
-To use the containerized singularity image in conjunction with BiocParallel, a recent R(3.6.0) installation on the cluster is needed that, as a minimum requirement, has also the packages `BiocParallel` and `batchtools` installed (minimum requirement would be similar to the image [biocparallel-example][])
+To use the containerized singularity image in conjunction with
+BiocParallel, a recent R(3.6.0) installation on the cluster is needed
+that, as a minimum requirement, has also the packages `BiocParallel`
+and `batchtools` installed (minimum requirement would be similar to
+the image [biocparallel-example][])
 
-NOTE: Submission of jobs directly from within the singularity container on the head node is not possible. The container doesn’t recognize the cluster environment and its specific configuration. It might also cause issues to mount volumes.
+NOTE: Submission of jobs directly from within the singularity
+container on the head node is not possible. The container doesn’t
+recognize the cluster environment and its specific configuration. It
+might also cause issues to mount volumes.
 
-For a SLURM cluster, `slurm-singularity.tmpl` is the template file with contents,
+For a SLURM cluster, we need to first define a template file for the
+jobs. `slurm-singularity.tmpl` is given below as an example. Loading
+the module 'singularity' and using the full path to the singularity
+image `<image.simg>` is important.
 
 ```
 #!/bin/bash
@@ -687,35 +734,42 @@ log.file = fs::path_expand(log.file)
 
 module load singularity
 
-singularity shell <path-to-image>/<bioconductor-image-w-BiocParallel>-latest.simg R -e 'batchtools::doJobCollection("<%= uri %>")'
+singularity shell /mnt/fs/nturaga/bioconductor-image-w-BiocParallel-latest.simg R -e 'batchtools::doJobCollection("<%= uri %>")'
 ```
 
-Using `BiocParallel` and `batchtools`, it is then possible to run the following on
-your head node in R
+Using `BiocParallel` and `batchtools`, it is then possible to run the
+following code on your head node in R using `BatchtoolsParam`. This
+batch tools functionality was introduced last year as an improvment on
+previously available batch processing methods in BiocParallel.
 
 ```
+## Load the library
 library(BiocParallel)
+library(batchtools)
+
+## define your BPPARAM,
 param <- BatchtoolsParam(
-    workers = 5, 
-    cluster = "slurm",
+	## define number of workers
+	workers = 5,
+	## define the cluster you are using, in this case SLURM
+	cluster = "slurm",
+	## point to the custome template
 	template="slurm-singularity.tmpl"
 )
 
-## and supply the param to bplapply for parallel execution
+## Supply the param to bplapply for parallel execution
 ## of a simple function that returns the hostname of the
-## compute nodes for testing purpose.
+## compute nodes for testing purpose. Run bplapply.
 test_cluster <- function(n) system2('hostname')
 
-## Run bplapply
-res <- bplapply(1:20, test_cluster, BPPARAM = param)
-
-res
+bplapply(1:5, test_cluster, BPPARAM = param)
 ```
 
 ### Future work
 
-There is quite a bit of work in progress making Bioconductor meet data
-analysis requirements on the cloud for a range of work.
+There is quite a bit of work in progress to develop solutions
+for Bioconductor to meet scalable data analysis requirements.
+A few of them are highlighted below,
 
 1. BiocParallel::RedisParam
 
@@ -724,36 +778,36 @@ analysis requirements on the cloud for a range of work.
 	Link: [RedisParam][]
 
 	This package provides a redis-based back-end for BiocParallel,
-    enabling an alternative, modern mechanism for distributed
-    computation.
+	enabling an alternative, modern mechanism for distributed
+	computation.
 
 	This is yet to be integrated into BiocParallel. The *RedisParam*
-    back end allows computation to be distributed across instances or
-    containers running on the cloud. To explain the way the RedisParam
-    functions, think of 5 worker instances waiting to to hear from a
-    single manager instance which sends a job or multiple jobs.
+	back end allows computation to be distributed across instances or
+	containers running on the cloud. To explain the way the RedisParam
+	functions, think of 5 worker instances waiting to to hear from a
+	single manager instance which sends a job or multiple jobs.
 
 2. Kubernetes
 
 	As the next iteration of our efforts on the cloud, we needed
-    RedisParam to be working on a container orchestration technology
-    like Kubernetes.
+	RedisParam to be working on a container orchestration technology
+	like Kubernetes.
 
 	We use Kubernetes to deploy the "cluster" on the cloud,
-    scalability and to automate management of the deployment to free
-    the user from mundane tasks such as worrying if a worker node has
-    failed.
+	scalability and to automate management of the deployment to free
+	the user from mundane tasks such as worrying if a worker node has
+	failed.
 
-    Link: [Bioconductor-k8sredis-k8s][]
+	Link: [Bioconductor-k8sredis-k8s][]
 
 3. Helm charts
 
 	[helm.sh][] is a package manager for Kubernetes. Once
-    we created the Kubernetes deployment for RedisParam we wanted to
-    make sure it's easily distributed and used in the community.
+	we created the Kubernetes deployment for RedisParam we wanted to
+	make sure it's easily distributed and used in the community.
 
 	Helm basically works on templating the K8s deployment and making a
-    easy to distribute tarball (or package).
+	easy to distribute tarball (or package).
 
    Link: [Bioconductor-k8sredis-helm-chart][]
 
@@ -848,3 +902,9 @@ sessionInfo()
 [helm.sh]: www.helm.sh
 
 [biocparallel-example]: https://github.com/nturaga/biocparallel-example
+
+[gs://genomics-public-data]: https://console.cloud.google.com/storage/browser/genomics-public-data?_ga=2.83004383.-812558624.1551369802&_gac=1.263180798.1558703500.Cj0KCQjwrJ7nBRD5ARIsAATMxsueRFjy_FKQEDMTSi8hKACKSCIVSqPJ-cMaNlQBOclyTTQ7GuFhYZ8aAuTzEALw_wcB
+
+[Google cloud genomics datasets]: https://cloud.google.com/genomics/docs/public-datasets/
+
+[Reference to gcloud compute]: https://cloud.google.com/sdk/gcloud/reference/compute/instances/
