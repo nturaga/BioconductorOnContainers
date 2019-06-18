@@ -31,7 +31,7 @@ https://bioc2019.bioconductor.org/schedule-developer-day
 
 ## Pre-requisites
 
-* Basic knowledge of R syntax / how to install packages the
+* Basic knowledge of R / how to install packages the
   Bioconductor way (using `BiocManager()`).
 
 * IMPORTANT: Docker needs to be installed on your local
@@ -54,7 +54,7 @@ https://bioc2019.bioconductor.org/schedule-developer-day
 		Hello from Docker!
 		This message shows that your installation appears to be working correctly.
 
-* IMPORTANT: After installing docker, be sure to pull an image which
+* IMPORTANT: After installing docker, be sure to pull(download) an image which
   we will use in class. This is a pretty big 'download' so make sure
   to run it before the workshop starts, otherwise there will be some
   lag. Run the command,
@@ -81,7 +81,7 @@ https://bioc2019.bioconductor.org/schedule-developer-day
 
 ### Who is this for?
 
-This workshop is for a **beginner**. You don't have to have any prior
+This workshop is for a **beginner**. You don't need any prior
 experience with Docker or container technology. In this course
 participants are expected to launch Docker images on their local
 machines, mount volumes, and set ports as needed to use RStudio.
@@ -89,7 +89,7 @@ machines, mount volumes, and set ports as needed to use RStudio.
 Since it's a beginners course, please note that we will be starting at
 a basic level. The next section of the course, the advanced section
 will give you deeper insight into how container technology can be used
-on the cloud.
+on the cloud with some demonstrations.
 
 ### Why Containers and Why Docker
 
@@ -100,7 +100,7 @@ aspect, they "share" the OS kernel. **Containers are running instances
 of images.**
 
 Docker is simply the most popular container technology being used
-today. An **Image** is static (fixed) template and container is a
+today. An **Image** is a static (fixed) template and container is a
 running version of the image. An image can be used to create a
 container.
 
@@ -113,18 +113,19 @@ knitr::include_graphics(
 	)
 ```
 
-The total disk space used by all of the running containers on disk is
-some combination of each container’s size and the virtual size
-values. If multiple containers started from the same exact image, the
-total size on disk for these containers would be SUM (size of
-containers) plus one container’s (virtual size- size). Be careful and
-monitor the size as it may grow very quickly. Read more about [Container size on disk].
-
 **Main reason behind using containers**: As a user, you want to
 delegate problems of software installation to the developer (in this
 case - Bioconductor). Bioconductor gives you these static docker
 images which solve this issue of software installation on your
 infrastructure.
+
+The total disk space used by all of the running containers on disk is
+some combination of each container’s size and the virtual size
+values. If multiple containers started from the same exact image, the
+total size on disk for these containers would be SUM (size of
+containers) plus one container’s (virtual size). Be careful and
+monitor the size of your containers as it may grow very quickly. 
+Read more about [Container size on disk][].
 
 ### Docker warmup
 
@@ -134,19 +135,20 @@ Get a list of docker images
 docker images
 ```
 
-Since there is nothing there, let's pull (get) an image specifically
-`bioconductor/release_base2:latest`
+Let's pull (get) an image specifically `bioconductor/release_base2:latest`
 (<organization>/<image_name>:<tag>).  This will take a minute or two.
 
 ```
 docker pull bioconductor/release_base2:latest
 ```
 
-Run the image to start a container (now we are getting somewhere!)
+Run the image to start a container,
 
 ```
-docker run -p 8787:8787 -e PASSWORD=bioc bioconductor/release_base2
+docker run -p 8787:8787 -e PASSWORD=bioc bioconductor/release_base2:latest
 ```
+
+where, `-p` if the port, and `-e` is the environment variable
 
 Open a new terminal and you can check to see your container is running,
 
@@ -163,7 +165,7 @@ docker kill <container_id>
 Remove the image (you don't want to do this one right now)
 
 ```
-docker rmi bioconductor/release_base2
+docker rmi bioconductor/release_base2:latest
 ```
 
 Interactively running docker images ,
@@ -183,6 +185,8 @@ Interactively run Containers,
 docker ps
 ```
 
+You can do this only if the container with that ID is running currently,
+
 ```
 docker exec -it <container ID>
 ```
@@ -197,12 +201,10 @@ Bioconductor provides Docker images in a few ways:
 #### [bioc_docker images][]
 
 These [bioconductor images are hosted on Docker Hub][]. The
-[bioconductor docker page][] has
-information and instructions on how to use them. The [Dockerfile(s)][] for
-each of these containers is located in
-Github. These
-are provided directly by the Bioconductor team for each supported
-version of Bioconductor and are categorized into,
+[bioconductor docker page][] has information and instructions on how to 
+use them. The [Dockerfile(s)][] for each of these containers is located in 
+Github. These are provided directly by the Bioconductor team for each 
+supported version of Bioconductor and are categorized into,
 
 1. base2: Contains R, RStudio, and a single Bioconductor package
    (`BiocManager`, providing the `install()` function for installing
@@ -237,30 +239,30 @@ customized Bioconductor container. This is a very good resource for
 developers/users who are looking to get an image without having to
 worry about system requirements.
 
-We will talk about how to extend these images in the next section.
-
 #### [Bioconda][]
 
-Bioconda provides
-[**BioContainers**][].  Bioconda
-provides a container for each individual package in Bioconductor under
- the BioContainer umbrella in [Quay.io][].
+Bioconda provides [**BioContainers**][].  Bioconda
+provides a container for each individual package in Bioconductor under 
+the "BioContainer" umbrella in [Quay.io][].
 
 - They also provide additional [multi package containers][], where you
 can combine multiple bioconda packages into one container. You may
 choose a Bioconductor package combination of your desire, and build a
-container with
-them.
+container with them. This is a helpful tool. 
 
 - But please note that they only contain the "release" version of the
-Bioconductor packages.
+Bioconductor packages. Bioconda does not build or distribute 'devel' version
+of Bioconductor.
 
 #### [bioconductor_full][]
 
-Bioconductor is now providing an image with a complete set of system
+Bioconductor is now providing an image with the complete set of system
 dependencies. The goal of this image is, the user should be able
-install every Bioconductor package (1600 +), without having to deal
-with system dependency installation.
+install every Bioconductor package (1620 +), without having to deal
+with system dependency installation. 
+
+But please note, that the actual Bioconductor packages themselves don't come on this image. It is up to
+the user to install the Bioconductor packages through `BiocManager::install`.
 
 These [bioconductor_full images can be obtained on [Docker hub][].
 
@@ -272,8 +274,11 @@ docker pull bioconductor/bioconductor_full:RELEASE_3_9
 docker pull bioconductor/bioconductor_full:RELEASE_3_8
 ```
 
-There are a few exceptions in this list, which are essentially because
-of the way these images are built and provisioned.
+There are a few exceptions in this list, which are unavoidable because
+of the way these images are built and provisioned as docker images. The list 
+is given in the `docs/issues.md` files on the Github page for these images. 
+(We try to keep that document as updated as possible, but if you find a package 
+installs and is listed there, send us a Pull Request.)
 
 ### Flavors of Bioconductor
 
@@ -281,10 +286,10 @@ The flavors you "need" for your work should be based on the packages
 you want for your analysis. There are a list of packages for each
 flavor you should evaluate before using the container.
 
-For most beginners a good place to start is the `core2` docker
-container.
+For most beginners a good place to start is the `bioconductor/release_core2` docker
+container which includes all the "core" bioconductor packages.
 
-#### How to extend the image for your needs
+#### How to extend a docker image
 
 There are two ways,
 
@@ -295,7 +300,7 @@ There are two ways,
    your needs as your base using
 
 		## Inherit from the bioconductor/release_base2 image
-		FROM bioconductor/release_base2
+		FROM bioconductor/release_base2:latest
 
 		## Add packages
 		RUN  R -e "BiocManager::install('<package_name>')"
@@ -308,7 +313,7 @@ There are two ways,
 
 	Run the image interactively, with RStudio
 
-		docker run -e PASSWORD=bioc -p 8787:8787 bioconductor/release_base2
+		docker run -e PASSWORD=bioc -p 8787:8787 bioconductor/release_base2:latest
 
 		or
 
@@ -322,16 +327,16 @@ There are two ways,
 
 		docker ps
 
-	Save the container state,
+	Save the container state, (it's a good idea to "tag" your image)
 
-		docker commit <container ID> my_image:v2
+		docker commit <container ID> my_image:1.0
 
 ### Mount volumes to your Docker container
 
-It is always a good idea to mount a volume either with data or a list
+It is useful sometimes to mount a volume either with data or a list
 of installed packages.
 
-You can bind as many mount volumes as needed with the `-v`/`--volume`
+You can bind as many volumes as needed with the `-v`/`--volume`
 command. The format is given as
 
 	-v /host/path:/container/path
@@ -349,9 +354,9 @@ To share libraries with your Docker container, bioconductor provides a
 way so that the R running within your docker image is able to see the
 packages in your container,
 
-	-v /shared-BioC-3.9:/usr/local/lib/R/host-site-library
+	-v /shared-Bio-3.9:/usr/local/lib/R/host-site-library
 
-This location has special meaning, and the configuration within the
+This location `/usr/local/lib/R/host-site-library` has special meaning, and the configuration within the
 bioconductor container allows the user to share built packages. The
 path on the docker image that should be mapped to a local R library
 directory is /usr/local/lib/R/host-site-library.
@@ -361,25 +366,35 @@ directory is /usr/local/lib/R/host-site-library.
 
 		mkdir /shared-BioC-3.9
 
-2. Run the image by sharing that directory
+2. Run the image by sharing that directory, for the R package libraries and the data.
 
 		docker run \
 			-v /shared-BioC-3.9:/usr/local/lib/R/host-site-library \
-			-v /data:/home/rstudio/data \
-			-it bioconductor/release_base2 R
+			-v /data:/home/rstudio/data \ 
+			-it bioconductor/release_base2 \
+			R
 
 	Within R,
 
 		BiocManager::install('BiocGenerics')
 
 All the packages in that directory will be directly available to use
-instantly. Another big advantage is, it prevents your docker image
+instantly the next time R is started from the container. 
+Another big advantage is, it prevents your docker image
 from growing in size due to package installation and data. This allows
-the users to distribute smaller docker images.
+the users to distribute smaller docker images containing only what is needed.
 
 ### Conclusion of Beginners section
 
 Re cap of items you have learnt in this section,
+
+1. How to start Bioconductor based docker images.
+
+1. Where these images are available.
+
+1. What flavors of Bioconductor images are present.
+
+1. How to bind/mount volumes on these Bioconductor docker images.
 
 ## Advanced section - Topics
 
@@ -393,12 +408,21 @@ Re cap of items you have learnt in this section,
 | Questions                    | 10m+ |
 | Future work                  | 5m   |
 
+### Who is this section for?
+
+The advanced section is for anyone who has some familiarity with how Docker works, 
+and wants to run things on the "Cloud". This will be a demonstration section, 
+since we are not providing "credits" to use a certain cloud (Google or AWS).
+
+This section aims to give some direction to users who are looking to use Bioconductor
+on the cloud. We also discuss some future work, which look very promising.
 
 ### Containers on the cloud
 
 Running your R session on the cloud with RStudio makes you 'machine
 independent'. It also allows you to access data hosted on the cloud
-cheaper and faster.
+cheaper and faster for example 1000 Genomes data which is available 
+on the google cloud: gs://genomics-public-data/1000-genomes.
 
 One of the biggest advantages to cloud machines is the on-demand
 scalability to run programs.
