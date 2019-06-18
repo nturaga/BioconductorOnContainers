@@ -1,10 +1,10 @@
 ---
 output:
   rmarkdown::html_document:
-	highlight: pygments
-	toc: true
-	toc_depth: 3
-	fig_width: 5
+    highlight: pygments
+    toc: true
+    toc_depth: 3
+    fig_width: 5
 vignette: >
   %\VignetteIndexEntry{Bioconductor_Containers_Workshop}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,7 +15,7 @@ vignette: >
 
 ## Instructor(s) name(s) and contact information
 
-Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [@nturaga][])
+Nitesh Turaga* <nitesh.turaga@roswellpark.org> (Github: [nturaga][])
 
 ## Schedule
 
@@ -469,7 +469,7 @@ There are a couple of ways this can be done, one is using the a
 service on that the google cloud provides called "Container Engine",
 the other by natively using the "Compute Engine" service, installing
 docker, and launching a container with a specific image stored either
-on the "Google Container Registry" (google's Dockerhub) or Dockerhub
+on the "Google Container Registry" (Google's Dockerhub) or Dockerhub
 itself.
 
 ##### Using the Google Container Engine
@@ -538,7 +538,7 @@ For more configuration options of your containers take a look at the
 
 ### Mount volumes on the cloud (Optional)
 
-There are many publicly available gemonics data sets hosted by cloud
+There are many publicly available genomics data sets hosted by cloud
 services, [Google cloud genomics datasets][] are located on the
 bucket, [gs://genomics-public-data][].
 
@@ -611,7 +611,7 @@ compilation.
 	BiocManager::install('Bioconductor/AnVIL')
 
 	## Use AnVIL install to install packages on your bioconductor-full image
-	AnVIL::install('GenomicsRanges')
+	AnVIL::install('GenomicRanges')
 
 ### HPC-Singularity containers
 
@@ -642,35 +642,29 @@ versions of Bioconductor,
 
 1. devel (master)
 
-```
-## Pull image
-singularity pull --name bioc-devel.simg shub://Bioconductor/bioconductor_full
-
-## Use image's R
-singularity shell bioc-devel.simg /usr/local/bin/R
-```
+    ## Pull image
+    singularity pull --name bioc-devel.simg shub://Bioconductor/bioconductor_full
+    
+    ## Use image's R
+    singularity shell bioc-devel.simg /usr/local/bin/R
 
 1. RELEASE_3_9
 
-```
-singularity pull --name bioc-release-3-9.simg shub://Bioconductor/bioconductor_full:release_3_9
-```
+
+    singularity pull --name bioc-release-3-9.simg shub://Bioconductor/bioconductor_full:release_3_9
 
 1. RELEASE_3_8
 
-```
-singularity pull --name bioc-release-3-8.simg shub://Bioconductor/bioconductor_full:release_3_8
-```
+    singularity pull --name bioc-release-3-8.simg shub://Bioconductor/bioconductor_full:release_3_8
 
 You can set an alias to your Singularity image on your `.bashrc` file
 as,
 
-```
-alias singulaR="singularity shell \
-				-B /mnt/lustre/users/nturaga/my-lib:/usr/local/lib/R/host-site-library \
-				/mnt/lustre/users/nturaga/bioc-devel.simg \
-				/usr/local/bin/R"
-```
+    alias singulaR="singularity shell \
+      -B /mnt/lustre/users/nturaga/my-lib:/usr/local/lib/R/host-site-library \
+      /mnt/lustre/users/nturaga/bioc-devel.simg \
+      /usr/local/bin/R"
+
 
 where,
 
@@ -710,7 +704,7 @@ and `batchtools` installed (minimum requirement would be similar to
 the image [biocparallel-example][])
 
 NOTE: Submission of jobs directly from within the singularity
-container on the head node is not possible. The container doesn’t
+container on the head node is not possible. The container doesn't
 recognize the cluster environment and its specific configuration. It
 might also cause issues to mount volumes.
 
@@ -739,7 +733,7 @@ singularity shell /mnt/fs/nturaga/bioconductor-image-w-BiocParallel-latest.simg 
 
 Using `BiocParallel` and `batchtools`, it is then possible to run the
 following code on your head node in R using `BatchtoolsParam`. This
-batch tools functionality was introduced last year as an improvment on
+batch tools functionality was introduced last year as an improvement on
 previously available batch processing methods in BiocParallel.
 
 ```
@@ -777,7 +771,6 @@ A few of them are highlighted below,
 
 	Link: [RedisParam][]
 
-	This package provides a redis-based back-end for BiocParallel,
 	enabling an alternative, modern mechanism for distributed
 	computation.
 
@@ -849,7 +842,7 @@ pkgs
 sessionInfo()
 ```
 
-[@nturaga]: https://github.com/nturaga
+[nturaga]: https://github.com/nturaga
 
 [install Docker]: https://docs.docker.com/install/
 
